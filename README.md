@@ -1,4 +1,8 @@
-# @owpz/ksuid [![NPM Version](https://img.shields.io/npm/v/@owpz/ksuid)](https://www.npmjs.com/package/@owpz/ksuid) [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/) [![Tests](https://img.shields.io/badge/tests-89%2F89-green.svg)](https://github.com/owpz/ksuid) [![Go Compatibility](https://img.shields.io/badge/Go%20Compatibility-100%25-brightgreen.svg)](https://github.com/segmentio/ksuid)
+# @owpz/ksuid 
+
+[![NPM Version](https://img.shields.io/npm/v/@owpz/ksuid)](https://www.npmjs.com/package/@owpz/ksuid) [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/) [![Go Compatibility](https://img.shields.io/badge/Go%20Compatibility-100%25-brightgreen.svg)](https://github.com/segmentio/ksuid)
+
+[![CI](https://github.com/owpz/ksuid/actions/workflows/ci.yml/badge.svg)](https://github.com/owpz/ksuid/actions/workflows/ci.yml) [![Tests](https://img.shields.io/badge/tests-170%2F170%20passing-brightgreen.svg)](https://github.com/owpz/ksuid/actions/workflows/test.yml) [![Code Quality](https://github.com/owpz/ksuid/actions/workflows/code-quality.yml/badge.svg)](https://github.com/owpz/ksuid/actions/workflows/code-quality.yml) [![API Contract](https://github.com/owpz/ksuid/actions/workflows/api-contract.yml/badge.svg)](https://github.com/owpz/ksuid/actions/workflows/api-contract.yml) [![Go Compatibility](https://github.com/owpz/ksuid/actions/workflows/go-compatibility.yml/badge.svg)](https://github.com/owpz/ksuid/actions/workflows/go-compatibility.yml)
 
 @owpz/ksuid is an efficient, comprehensive, production-ready TypeScript library for generating and
 parsing a specific kind of globally unique identifier called a _KSUID_. This library serves as a
