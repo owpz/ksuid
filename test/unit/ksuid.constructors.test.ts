@@ -25,7 +25,7 @@ test("KSUID.parseOrNil with invalid KSUID returns nil", () => {
     const result = KSUID.parseOrNil(invalid);
     assert.ok(
       result.isNil(),
-      `Expected nil for input: "${invalid}", got: ${result.toString()}`,
+      `Expected nil for input: "${invalid}", got: ${result.toString()}`
     );
   }
 });
@@ -81,21 +81,21 @@ test("KSUID.fromPartsOrNil with invalid payload returns nil", () => {
 test("KSUID.fromBytes error message matches Go", () => {
   assert.throws(
     () => KSUID.fromBytes(Buffer.alloc(19)),
-    "Valid KSUIDs are 20 bytes",
+    "Valid KSUIDs are 20 bytes"
   );
 });
 
 test("KSUID.parse error message matches Go", () => {
   assert.throws(
     () => KSUID.parse("invalid"),
-    "Valid encoded KSUIDs are 27 characters",
+    "Valid encoded KSUIDs are 27 characters"
   );
 });
 
 test("KSUID.fromParts error message matches Go", () => {
   assert.throws(
     () => KSUID.fromParts(123, Buffer.alloc(15)),
-    "Valid KSUID payloads are 16 bytes",
+    "Valid KSUID payloads are 16 bytes"
   );
 });
 

@@ -7,7 +7,7 @@ export class Uint128 {
   // Store as [low, high] to match Go's uint128 [2]uint64 layout
   constructor(
     private readonly low: bigint,
-    private readonly high: bigint,
+    private readonly high: bigint
   ) {
     // Ensure values are within uint64 bounds
     this.low = low & U64_MAX;

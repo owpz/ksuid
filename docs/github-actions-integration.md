@@ -1,6 +1,7 @@
 # GitHub Actions Integration
 
-This document describes the GitHub Actions workflows that protect the API contract and ensure code quality.
+This document describes the GitHub Actions workflows that protect the API contract and ensure code
+quality.
 
 ## Workflows
 

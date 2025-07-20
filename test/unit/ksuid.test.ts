@@ -22,7 +22,7 @@ test("KSUID.parse() with valid ksuid", () => {
 
   const expectedPayload = Buffer.from(
     "669f7efd7b6fe812278486085878563d",
-    "hex",
+    "hex"
   );
 
   assert.is(expectedPayload.length, 16);

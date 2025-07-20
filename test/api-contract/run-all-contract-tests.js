@@ -44,19 +44,19 @@ async function runTest(test) {
     let stdout = "";
     let stderr = "";
 
-    child.stdout?.on("data", (data) => {
+    child.stdout?.on("data", data => {
       stdout += data.toString();
     });
 
-    child.stderr?.on("data", (data) => {
+    child.stderr?.on("data", data => {
       stderr += data.toString();
     });
 
-    child.on("close", (code) => {
+    child.on("close", code => {
       if (code === 0) {
         // Parse test results from stdout
         const matches = stdout.match(
-          /Total:\s+(\d+).*Passed:\s+(\d+).*Duration:\s+([\d.]+)ms/,
+          /Total:\s+(\d+).*Passed:\s+(\d+).*Duration:\s+([\d.]+)ms/
         );
         if (matches) {
           const [, total, passed, duration] = matches;
@@ -76,8 +76,8 @@ async function runTest(test) {
           console.log(
             `   Error output:\n${stderr
               .split("\n")
-              .map((line) => `     ${line}`)
-              .join("\n")}`,
+              .map(line => `     ${line}`)
+              .join("\n")}`
           );
         }
         resolve({
@@ -89,7 +89,7 @@ async function runTest(test) {
       }
     });
 
-    child.on("error", (error) => {
+    child.on("error", error => {
       console.log(`   ❌ Failed to run test: ${error.message}`);
       resolve({ success: false, total: 0, passed: 0, error: error.message });
     });
@@ -101,10 +101,10 @@ async function main() {
   console.log("==========================");
   console.log("");
   console.log(
-    "This test suite verifies that the public API contract remains stable.",
+    "This test suite verifies that the public API contract remains stable."
   );
   console.log(
-    "Any failures indicate potential breaking changes requiring a major version bump.",
+    "Any failures indicate potential breaking changes requiring a major version bump."
   );
 
   let totalTests = 0;
@@ -145,7 +145,7 @@ async function main() {
     });
 
     console.log(
-      "⚠️  These failures indicate potential breaking changes that may require",
+      "⚠️  These failures indicate potential breaking changes that may require"
     );
     console.log("   a MAJOR version bump according to semantic versioning.");
     console.log("");
@@ -171,7 +171,7 @@ async function main() {
 }
 
 if (require.main === module) {
-  main().catch((error) => {
+  main().catch(error => {
     console.error("❌ Contract test runner failed:", error);
     process.exit(1);
   });

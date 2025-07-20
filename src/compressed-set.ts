@@ -57,7 +57,7 @@ export class CompressedSet {
    * String representation showing all KSUIDs.
    */
   toString(): string {
-    const ksuids = this.toArray().map((k) => `"${k.toString()}"`);
+    const ksuids = this.toArray().map(k => `"${k.toString()}"`);
     return `[${ksuids.join(", ")}]`;
   }
 
@@ -147,7 +147,7 @@ export class CompressedSet {
             uniqueIds.slice(i + 1),
             timestamp,
             id,
-            v,
+            v
           );
 
           if (length > 0) {
@@ -160,7 +160,7 @@ export class CompressedSet {
               buffer,
               pos,
               rangeSize,
-              rangeSizeLength,
+              rangeSizeLength
             );
             pos += rangeSizeLength;
 
@@ -183,6 +183,8 @@ export class CompressedSet {
         }
       }
 
+      // Update state for next iteration
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       lastKSUID = id;
       lastValue = v;
     }
@@ -194,7 +196,7 @@ export class CompressedSet {
     ids: KSUID[],
     timestamp: number,
     lastKSUID: KSUID,
-    lastValue: Uint128,
+    lastValue: Uint128
   ): { length: number; count: number } {
     const one = Uint128.one();
     let length = 0;
@@ -272,7 +274,7 @@ export class CompressedSet {
     buffer: Buffer,
     offset: number,
     v: Uint128,
-    length: number,
+    length: number
   ): void {
     const bytes = v.bytes();
     bytes.subarray(16 - length).copy(buffer, offset);
@@ -282,7 +284,7 @@ export class CompressedSet {
     buffer: Buffer,
     offset: number,
     v: number,
-    length: number,
+    length: number
   ): void {
     const temp = Buffer.alloc(8);
     temp.writeBigUInt64BE(BigInt(v), 0);
@@ -293,7 +295,7 @@ export class CompressedSet {
     buffer: Buffer,
     offset: number,
     v: number,
-    length: number,
+    length: number
   ): void {
     const temp = Buffer.alloc(4);
     temp.writeUInt32BE(v, 0);
@@ -308,9 +310,9 @@ export class CompressedSetIter {
   public ksuid: KSUID = KSUID.nil;
 
   private content: Buffer;
-  private offset: number = 0;
-  private seqlength: number = 0;
-  private timestamp: number = 0;
+  private offset = 0;
+  private seqlength = 0;
+  private timestamp = 0;
   private lastValue: Uint128 = Uint128.zero();
 
   constructor(content: Buffer) {
@@ -345,7 +347,7 @@ export class CompressedSetIter {
         // Read raw 20-byte KSUID
         const ksuidBuffer = this.content.subarray(
           this.offset,
-          this.offset + 20,
+          this.offset + 20
         );
         this.ksuid = KSUID.fromBytes(ksuidBuffer);
         this.offset += 20;
@@ -358,7 +360,7 @@ export class CompressedSetIter {
         // Read timestamp delta and payload
         const deltaBuffer = this.content.subarray(
           this.offset,
-          this.offset + cnt,
+          this.offset + cnt
         );
         const delta = this.readVarint32(deltaBuffer);
         this.offset += cnt;
@@ -367,7 +369,7 @@ export class CompressedSetIter {
 
         const payloadBuffer = this.content.subarray(
           this.offset,
-          this.offset + 16,
+          this.offset + 16
         );
         this.offset += 16;
 
@@ -384,7 +386,7 @@ export class CompressedSetIter {
         // Read payload delta
         const deltaBuffer = this.content.subarray(
           this.offset,
-          this.offset + cnt,
+          this.offset + cnt
         );
         const delta = this.readVarint128(deltaBuffer);
         this.offset += cnt;
@@ -399,7 +401,7 @@ export class CompressedSetIter {
         // Read range length
         const lengthBuffer = this.content.subarray(
           this.offset,
-          this.offset + cnt,
+          this.offset + cnt
         );
         const rangeLength = this.readVarint64(lengthBuffer);
         this.offset += cnt;
@@ -413,7 +415,7 @@ export class CompressedSetIter {
 
       default:
         throw KSUIDError.malformedData(
-          "invalid compression flag in KSUID set iterator",
+          "invalid compression flag in KSUID set iterator"
         );
     }
 

@@ -140,7 +140,7 @@ function demonstrateGracefulDegradation() {
 
     if (ksuid.isNil()) {
       console.log(
-        `❌ Failed to parse "${String(input)}", using default behavior`,
+        `❌ Failed to parse "${String(input)}", using default behavior`
       );
     } else {
       console.log(`✅ Successfully parsed: ${ksuid.toString()}`);
@@ -187,7 +187,7 @@ class ApplicationError extends Error {
   constructor(
     message: string,
     public readonly context: string,
-    public readonly originalError: KSUIDError,
+    public readonly originalError: KSUIDError
   ) {
     super(message);
     this.name = "ApplicationError";
@@ -202,7 +202,7 @@ function processUserID(userInput: string, context: string): KSUID {
       throw new ApplicationError(
         `Failed to process user ID in ${context}: ${getUserFriendlyMessage(error)}`,
         context,
-        error,
+        error
       );
     }
     throw error; // Re-throw non-KSUID errors
@@ -272,7 +272,7 @@ function demonstrateStructuredLogging() {
 function main() {
   console.log("🔍 KSUID Error Handling Examples\n");
   console.log(
-    "This demonstrates comprehensive error handling for production applications.\n",
+    "This demonstrates comprehensive error handling for production applications.\n"
   );
 
   demonstrateBasicErrorHandling();

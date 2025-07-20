@@ -131,7 +131,7 @@ class PerformanceComparison {
 
   private compareResults(
     goResults: BenchmarkResult[],
-    tsResults: BenchmarkResult[],
+    tsResults: BenchmarkResult[]
   ): void {
     // Create operation mapping
     const operationMap: { [key: string]: string } = {
@@ -149,8 +149,8 @@ class PerformanceComparison {
     };
 
     for (const [goOp, tsOp] of Object.entries(operationMap)) {
-      const goResult = goResults.find((r) => r.operation === goOp);
-      const tsResult = tsResults.find((r) => r.operation === tsOp);
+      const goResult = goResults.find(r => r.operation === goOp);
+      const tsResult = tsResults.find(r => r.operation === tsOp);
 
       if (goResult && tsResult) {
         const goFaster = goResult.opsPerSecond > tsResult.opsPerSecond;
@@ -181,7 +181,7 @@ class PerformanceComparison {
         "| Winner".padEnd(10) +
         "| Speed Ratio".padEnd(13) +
         "| Advantage".padEnd(12) +
-        "|",
+        "|"
     );
     console.log(
       "|" +
@@ -196,7 +196,7 @@ class PerformanceComparison {
         "-".repeat(12) +
         "|" +
         "-".repeat(11) +
-        "|",
+        "|"
     );
 
     for (const result of this.results) {
@@ -209,60 +209,60 @@ class PerformanceComparison {
         : `${((result.speedRatio - 1) * 100).toFixed(0)}% slower`.padEnd(11);
 
       console.log(
-        `| ${result.operation.padEnd(20)} | ${goOps} | ${tsOps} | ${winner.padEnd(8)} | ${ratio} | ${advantage} |`,
+        `| ${result.operation.padEnd(20)} | ${goOps} | ${tsOps} | ${winner.padEnd(8)} | ${ratio} | ${advantage} |`
       );
     }
     console.log("=".repeat(100));
 
     // Summary statistics
-    const goWins = this.results.filter((r) => r.goFaster).length;
+    const goWins = this.results.filter(r => r.goFaster).length;
     const tsWins = this.results.length - goWins;
     const avgGoAdvantage =
       this.results
-        .filter((r) => r.goFaster)
+        .filter(r => r.goFaster)
         .reduce((sum, r) => sum + r.speedRatio, 0) / Math.max(goWins, 1);
     const avgTsAdvantage =
       this.results
-        .filter((r) => !r.goFaster)
+        .filter(r => !r.goFaster)
         .reduce((sum, r) => sum + r.speedRatio, 0) / Math.max(tsWins, 1);
 
     console.log("\n📈 Performance Summary:");
     console.log(`🟢 Go wins: ${goWins}/${this.results.length} operations`);
     console.log(
-      `🔵 TypeScript wins: ${tsWins}/${this.results.length} operations`,
+      `🔵 TypeScript wins: ${tsWins}/${this.results.length} operations`
     );
 
     if (goWins > 0) {
       console.log(
-        `🟢 Average Go advantage: ${avgGoAdvantage.toFixed(2)}x faster`,
+        `🟢 Average Go advantage: ${avgGoAdvantage.toFixed(2)}x faster`
       );
     }
 
     if (tsWins > 0) {
       console.log(
-        `🔵 Average TypeScript advantage: ${avgTsAdvantage.toFixed(2)}x faster`,
+        `🔵 Average TypeScript advantage: ${avgTsAdvantage.toFixed(2)}x faster`
       );
     }
 
     // Highlight key operations
     const generation = this.results.find(
-      (r) => r.operation === "Random Generation",
+      r => r.operation === "Random Generation"
     );
-    const parsing = this.results.find((r) => r.operation === "String Parsing");
+    const parsing = this.results.find(r => r.operation === "String Parsing");
     const sorting = this.results.find(
-      (r) => r.operation === "Sorting (1K items)",
+      r => r.operation === "Sorting (1K items)"
     );
 
     if (generation) {
       console.log(`\n🎯 KSUID Generation:`);
       console.log(
-        `   Go: ${this.formatNumber(generation.goOpsPerSec)} ops/sec`,
+        `   Go: ${this.formatNumber(generation.goOpsPerSec)} ops/sec`
       );
       console.log(
-        `   TypeScript: ${this.formatNumber(generation.tsOpsPerSec)} ops/sec`,
+        `   TypeScript: ${this.formatNumber(generation.tsOpsPerSec)} ops/sec`
       );
       console.log(
-        `   ${generation.goFaster ? "Go" : "TypeScript"} is ${generation.speedRatio.toFixed(2)}x faster`,
+        `   ${generation.goFaster ? "Go" : "TypeScript"} is ${generation.speedRatio.toFixed(2)}x faster`
       );
     }
 
@@ -270,10 +270,10 @@ class PerformanceComparison {
       console.log(`\n🎯 KSUID Parsing:`);
       console.log(`   Go: ${this.formatNumber(parsing.goOpsPerSec)} ops/sec`);
       console.log(
-        `   TypeScript: ${this.formatNumber(parsing.tsOpsPerSec)} ops/sec`,
+        `   TypeScript: ${this.formatNumber(parsing.tsOpsPerSec)} ops/sec`
       );
       console.log(
-        `   ${parsing.goFaster ? "Go" : "TypeScript"} is ${parsing.speedRatio.toFixed(2)}x faster`,
+        `   ${parsing.goFaster ? "Go" : "TypeScript"} is ${parsing.speedRatio.toFixed(2)}x faster`
       );
     }
 
@@ -284,7 +284,7 @@ class PerformanceComparison {
       console.log(`   Go: ${this.formatNumber(goSortItems)} items/sec`);
       console.log(`   TypeScript: ${this.formatNumber(tsSortItems)} items/sec`);
       console.log(
-        `   ${sorting.goFaster ? "Go" : "TypeScript"} is ${sorting.speedRatio.toFixed(2)}x faster`,
+        `   ${sorting.goFaster ? "Go" : "TypeScript"} is ${sorting.speedRatio.toFixed(2)}x faster`
       );
     }
 
@@ -294,14 +294,14 @@ class PerformanceComparison {
       const overallAdvantage =
         this.results.reduce(
           (sum, r) => sum + (r.goFaster ? r.speedRatio : 1 / r.speedRatio),
-          0,
+          0
         ) / this.results.length;
       console.log(
-        `🟢 Go is generally faster (${overallAdvantage.toFixed(2)}x average advantage)`,
+        `🟢 Go is generally faster (${overallAdvantage.toFixed(2)}x average advantage)`
       );
       console.log("🎯 Choose Go for maximum performance");
       console.log(
-        "🎯 Choose TypeScript for excellent performance + ecosystem benefits",
+        "🎯 Choose TypeScript for excellent performance + ecosystem benefits"
       );
     } else {
       console.log("🔵 TypeScript shows competitive or better performance");
@@ -318,18 +318,18 @@ class PerformanceComparison {
       timestamp: new Date().toISOString(),
       summary: {
         totalOperations: this.results.length,
-        goWins: this.results.filter((r) => r.goFaster).length,
-        tsWins: this.results.filter((r) => !r.goFaster).length,
+        goWins: this.results.filter(r => r.goFaster).length,
+        tsWins: this.results.filter(r => !r.goFaster).length,
       },
       results: this.results,
     };
 
     writeFileSync(
       "performance-comparison.json",
-      JSON.stringify(exportData, null, 2),
+      JSON.stringify(exportData, null, 2)
     );
     console.log(
-      "\n📊 Comparison results exported to performance-comparison.json",
+      "\n📊 Comparison results exported to performance-comparison.json"
     );
   }
 }

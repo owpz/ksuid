@@ -28,7 +28,7 @@ class Benchmark {
   async run(
     name: string,
     iterations: number,
-    operation: () => void | Promise<void>,
+    operation: () => void | Promise<void>
   ): Promise<BenchmarkResult> {
     // Warm up
     for (let i = 0; i < Math.min(1000, iterations / 10); i++) {
@@ -81,7 +81,7 @@ class Benchmark {
         "| Avg Time".padEnd(15) +
         "| Memory MB".padEnd(12) +
         "| Iterations".padEnd(12) +
-        "|",
+        "|"
     );
     console.log(
       "|" +
@@ -94,7 +94,7 @@ class Benchmark {
         "-".repeat(11) +
         "|" +
         "-".repeat(11) +
-        "|",
+        "|"
     );
 
     for (const result of this.results) {
@@ -106,7 +106,7 @@ class Benchmark {
       const iterFormatted = result.iterations.toLocaleString().padEnd(11);
 
       console.log(
-        `| ${result.operation.padEnd(23)} | ${opsFormatted} | ${avgFormatted} | ${memFormatted} | ${iterFormatted} |`,
+        `| ${result.operation.padEnd(23)} | ${opsFormatted} | ${avgFormatted} | ${memFormatted} | ${iterFormatted} |`
       );
     }
     console.log("=".repeat(80));
@@ -194,7 +194,7 @@ async function runBenchmarks(): Promise<void> {
 
   // 8. Sorting Benchmark (smaller dataset)
   await benchmark.run("Sorting (1K items)", 1000, () => {
-    const subset = testKsuids.slice(0, 1000).map((k) => k); // Copy to avoid mutation
+    const subset = testKsuids.slice(0, 1000).map(k => k); // Copy to avoid mutation
     sort(subset);
   });
 
@@ -228,13 +228,13 @@ async function runBenchmarks(): Promise<void> {
   console.log("\n📈 Performance Analysis:");
   const results = benchmark.getResults();
 
-  const generation = results.find((r) => r.operation === "Random Generation");
-  const parsing = results.find((r) => r.operation === "String Parsing");
-  const sorting = results.find((r) => r.operation === "Sorting (1K items)");
+  const generation = results.find(r => r.operation === "Random Generation");
+  const parsing = results.find(r => r.operation === "String Parsing");
+  const sorting = results.find(r => r.operation === "Sorting (1K items)");
 
   if (generation) {
     console.log(
-      `🎯 Generation: ${generation.opsPerSecond.toLocaleString()} KSUIDs/sec`,
+      `🎯 Generation: ${generation.opsPerSecond.toLocaleString()} KSUIDs/sec`
     );
     if (generation.opsPerSecond > 80000) {
       console.log("   ✅ Excellent generation performance");
@@ -247,7 +247,7 @@ async function runBenchmarks(): Promise<void> {
 
   if (parsing) {
     console.log(
-      `🎯 Parsing: ${parsing.opsPerSecond.toLocaleString()} parses/sec`,
+      `🎯 Parsing: ${parsing.opsPerSecond.toLocaleString()} parses/sec`
     );
     if (parsing.opsPerSecond > 150000) {
       console.log("   ✅ Excellent parsing performance");
@@ -266,7 +266,7 @@ async function runBenchmarks(): Promise<void> {
   // Memory usage analysis
   const totalMemory = results.reduce(
     (sum, r) => sum + (r.memoryUsageMB || 0),
-    0,
+    0
   );
   console.log(`💾 Total memory overhead: ${totalMemory.toFixed(2)} MB`);
 

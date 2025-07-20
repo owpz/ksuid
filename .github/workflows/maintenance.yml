@@ -3,7 +3,7 @@ name: Maintenance
 on:
   schedule:
     # Run daily at 2 AM UTC
-    - cron: '0 2 * * *'
+    - cron: "0 2 * * *"
   workflow_dispatch: # Allow manual trigger
 
 jobs:
@@ -20,36 +20,36 @@ jobs:
           stale-issue-message: |
             This issue has been automatically marked as stale because it has not had recent activity. 
             It will be closed if no further activity occurs within 7 days.
-            
+
             If this issue is still relevant, please:
             - Add a comment explaining why it should remain open
             - Provide any additional information that might help resolve it
             - Remove the 'stale' label
-            
+
             Thank you for your contribution to @owpz/ksuid!
           stale-pr-message: |
             This pull request has been automatically marked as stale because it has not had recent activity.
             It will be closed if no further activity occurs within 7 days.
-            
+
             If this PR is still relevant, please:
             - Rebase on the latest main branch
             - Address any feedback or conflicts
             - Add a comment explaining the current status
             - Remove the 'stale' label
-            
+
             Thank you for your contribution to @owpz/ksuid!
           close-issue-message: |
             This issue was automatically closed because it has been stale for 7 days with no activity.
-            
+
             If you believe this issue should remain open, please reopen it and provide additional context.
           close-pr-message: |
             This pull request was automatically closed because it has been stale for 7 days with no activity.
-            
+
             If you would like to continue with this PR, please reopen it and address any feedback.
-          stale-issue-label: 'stale'
-          stale-pr-label: 'stale'
-          exempt-issue-labels: 'pinned,security,go-compatibility'
-          exempt-pr-labels: 'pinned,security,go-compatibility'
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+          exempt-issue-labels: "pinned,security,go-compatibility"
+          exempt-pr-labels: "pinned,security,go-compatibility"
           days-before-stale: 30
           days-before-close: 7
 
@@ -58,28 +58,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-      
+
       - name: Check for outdated dependencies
         run: |
           npm ci
           npm outdated --json > outdated.json || true
-          
+
           if [ -s outdated.json ]; then
             echo "::warning::Outdated dependencies found:"
             cat outdated.json
           else
             echo "::notice::All dependencies are up to date"
           fi
-      
+
       - name: Upload outdated report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dependency-report
           path: outdated.json
@@ -90,12 +90,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Check links in markdown files
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'yes'
-          config-file: '.markdown-link-check.json'
-          folder-path: '.'
-          file-path: './README.md, ./CONTRIBUTING.md'
+          use-quiet-mode: "yes"
+          use-verbose-mode: "yes"
+          config-file: ".markdown-link-check.json"
+          folder-path: "."
+          file-path: "./README.md, ./CONTRIBUTING.md"

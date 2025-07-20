@@ -134,7 +134,7 @@ test("Sequence with deterministic seed", () => {
   // Last 2 bytes should be different (sequence numbers 0 and 1)
   assert.not.equal(
     firstPayload.readUInt16BE(14),
-    secondPayload.readUInt16BE(14),
+    secondPayload.readUInt16BE(14)
   );
   assert.is(firstPayload.readUInt16BE(14), 0); // First sequence number
   assert.is(secondPayload.readUInt16BE(14), 1); // Second sequence number
@@ -156,7 +156,7 @@ test("Sequence ordering maintains lexicographic order", () => {
   }
 
   // String representations should also be in order
-  const strings = ids.map((id) => id.toString());
+  const strings = ids.map(id => id.toString());
   const sorted = [...strings].sort();
   assert.equal(strings, sorted);
 });

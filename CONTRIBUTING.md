@@ -1,6 +1,7 @@
 # Contributing to @owpz/ksuid
 
-Thank you for your interest in contributing to the KSUID TypeScript library! This guide will help you get started.
+Thank you for your interest in contributing to the KSUID TypeScript library! This guide will help
+you get started.
 
 ## 🚀 Quick Start
 
@@ -309,21 +310,17 @@ When reporting bugs:
 ### Issue Template
 
 ```markdown
-**Bug Description**
-A clear description of the bug
+**Bug Description** A clear description of the bug
 
-**To Reproduce**
-Steps to reproduce:
+**To Reproduce** Steps to reproduce:
 
 1.
 2.
 3.
 
-**Expected Behavior**
-What should happen
+**Expected Behavior** What should happen
 
-**Actual Behavior**
-What actually happens
+**Actual Behavior** What actually happens
 
 **Environment**
 
@@ -331,8 +328,7 @@ What actually happens
 - @owpz/ksuid version:
 - OS:
 
-**Additional Context**
-Any other relevant information
+**Additional Context** Any other relevant information
 ```
 
 ## 📚 Resources

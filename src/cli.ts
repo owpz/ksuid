@@ -130,7 +130,7 @@ function printTemplate(ksuid: KSUID, template: string): void {
   for (const [key, value] of Object.entries(data)) {
     result = result.replace(
       new RegExp(`{{\\s*${key}\\s*}}`, "g"),
-      value.toString(),
+      value.toString()
     );
   }
 
@@ -170,7 +170,7 @@ function main(): void {
   }
 
   // If no KSUIDs provided, generate new ones
-  let ksuids: string[] = args.args;
+  const ksuids: string[] = args.args;
   if (ksuids.length === 0) {
     for (let i = 0; i < args.count; i++) {
       ksuids.push(KSUID.random().toString());
@@ -199,7 +199,7 @@ function main(): void {
         console.error(`Error when parsing "${ksuidString}": ${error.message}`);
       } else {
         console.error(
-          `Unexpected error when parsing "${ksuidString}": ${String(error)}`,
+          `Unexpected error when parsing "${ksuidString}": ${String(error)}`
         );
       }
       console.error("");

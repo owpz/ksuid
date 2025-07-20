@@ -57,21 +57,21 @@ test("Go compatibility - known test vectors", () => {
     assert.is(
       ksuid.toString(),
       vector.expectedString,
-      `${vector.description}: string encoding mismatch`,
+      `${vector.description}: string encoding mismatch`
     );
     assert.is(
       ksuid.toBuffer().toString("hex"),
       vector.expectedRaw,
-      `${vector.description}: raw bytes mismatch`,
+      `${vector.description}: raw bytes mismatch`
     );
     assert.is(
       ksuid.timestamp,
       vector.timestamp,
-      `${vector.description}: timestamp extraction mismatch`,
+      `${vector.description}: timestamp extraction mismatch`
     );
     assert.ok(
       ksuid.payload.equals(payload),
-      `${vector.description}: payload extraction mismatch`,
+      `${vector.description}: payload extraction mismatch`
     );
 
     // Test round-trip parsing
@@ -79,21 +79,21 @@ test("Go compatibility - known test vectors", () => {
     assert.is(
       parsed.toString(),
       vector.expectedString,
-      `${vector.description}: round-trip string mismatch`,
+      `${vector.description}: round-trip string mismatch`
     );
     assert.is(
       parsed.toBuffer().toString("hex"),
       vector.expectedRaw,
-      `${vector.description}: round-trip raw bytes mismatch`,
+      `${vector.description}: round-trip raw bytes mismatch`
     );
     assert.is(
       parsed.timestamp,
       vector.timestamp,
-      `${vector.description}: round-trip timestamp mismatch`,
+      `${vector.description}: round-trip timestamp mismatch`
     );
     assert.ok(
       parsed.payload.equals(payload),
-      `${vector.description}: round-trip payload mismatch`,
+      `${vector.description}: round-trip payload mismatch`
     );
   }
 });
@@ -128,12 +128,12 @@ test("Go compatibility - next/prev operations", () => {
     assert.is(
       next.toString(),
       test.expectedNext,
-      `Next operation mismatch for ${test.original}`,
+      `Next operation mismatch for ${test.original}`
     );
     assert.is(
       prev.toString(),
       test.expectedPrev,
-      `Prev operation mismatch for ${test.original}`,
+      `Prev operation mismatch for ${test.original}`
     );
 
     // Verify ordering (skip for nil case which has special underflow behavior)
@@ -141,24 +141,24 @@ test("Go compatibility - next/prev operations", () => {
       assert.is(
         prev.compare(original),
         -1,
-        "Prev should be less than original",
+        "Prev should be less than original"
       );
       assert.is(
         original.compare(next),
         -1,
-        "Original should be less than next",
+        "Original should be less than next"
       );
     } else {
       // Special case: nil KSUID prev wraps to max value
       assert.is(
         prev.compare(original),
         1,
-        "Prev of nil should be max KSUID (greater)",
+        "Prev of nil should be max KSUID (greater)"
       );
       assert.is(
         original.compare(next),
         -1,
-        "Original should be less than next",
+        "Original should be less than next"
       );
     }
   }
@@ -215,7 +215,7 @@ test("Go compatibility - time conversion", () => {
     assert.is(
       actualJSTime,
       expectedJSTime,
-      `Time conversion mismatch for timestamp ${testCase.timestamp}`,
+      `Time conversion mismatch for timestamp ${testCase.timestamp}`
     );
   }
 });
@@ -226,17 +226,17 @@ test("Go compatibility - Base62 encoding edge cases", () => {
   // Test leading zeros preservation
   const smallValue = KSUID.fromParts(
     0,
-    Buffer.from("00000000000000000000000000000001", "hex"),
+    Buffer.from("00000000000000000000000000000001", "hex")
   );
   const smallString = smallValue.toString();
   assert.is(
     smallString.length,
     27,
-    "KSUID strings must always be 27 characters",
+    "KSUID strings must always be 27 characters"
   );
   assert.ok(
     smallString.startsWith("000000"),
-    "Small values should have leading zeros",
+    "Small values should have leading zeros"
   );
 
   // Test that we can parse it back
@@ -244,7 +244,7 @@ test("Go compatibility - Base62 encoding edge cases", () => {
   assert.is(
     reparsed.compare(smallValue),
     0,
-    "Round-trip should preserve value",
+    "Round-trip should preserve value"
   );
 });
 
@@ -301,13 +301,13 @@ test("Go compatibility - sorting behavior", () => {
     "00000D9NdrD0lJOOhLnBVfvWKK2",
   ];
 
-  const ksuids = unsortedStrings.map((s) => KSUID.parse(s));
+  const ksuids = unsortedStrings.map(s => KSUID.parse(s));
 
   // Sort using JavaScript's sort with our compare function
   const sorted = [...ksuids].sort((a, b) => a.compare(b));
 
   // Convert back to strings
-  const sortedStrings = sorted.map((k) => k.toString());
+  const sortedStrings = sorted.map(k => k.toString());
 
   // Should be in lexicographic order (which matches chronological order for KSUIDs)
   const expectedOrder = [
@@ -321,7 +321,7 @@ test("Go compatibility - sorting behavior", () => {
   assert.equal(
     sortedStrings,
     expectedOrder,
-    "Sorting order should match Go implementation",
+    "Sorting order should match Go implementation"
   );
 });
 

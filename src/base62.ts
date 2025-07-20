@@ -28,7 +28,7 @@ export class Base62 {
       throw KSUIDError.invalidBufferLength(
         buffer,
         KSUID_BYTE_LENGTH,
-        "KSUID buffer",
+        "KSUID buffer"
       );
     }
 
@@ -79,7 +79,7 @@ export class Base62 {
     }
 
     // Convert the BigInt back to a hex string.
-    let hex = num.toString(16).padStart(KSUID_BYTE_LENGTH * 2, "0");
+    const hex = num.toString(16).padStart(KSUID_BYTE_LENGTH * 2, "0");
 
     const decodedBuffer = Buffer.from(hex, "hex");
 

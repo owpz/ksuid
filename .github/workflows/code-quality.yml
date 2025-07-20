@@ -2,46 +2,292 @@ name: Code Quality
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
-  lint:
-    name: Lint & Type Check
+  formatting:
     runs-on: ubuntu-latest
+    name: Code Formatting Check
+
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20.x"
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
+      - name: Check Prettier formatting
+        run: npm run format:check
+
+      - name: Format check results
+        if: failure()
+        run: |
+          echo "## ❌ Code Formatting Issues Found" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "The code is not properly formatted according to Prettier rules." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
+          echo "Run the following command locally:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm run format" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Then commit the formatted changes." >> $GITHUB_STEP_SUMMARY
+
+  linting:
+    runs-on: ubuntu-latest
+    name: ESLint Code Quality
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Run ESLint
         run: npm run lint
-      
-      - name: Run TypeScript type check
-        run: npm run type-check
+        continue-on-error: true
+        id: eslint
 
-  format-check:
-    name: Format Check
+      - name: Generate ESLint Report
+        if: failure()
+        run: |
+          echo "## ⚠️ ESLint Issues Found" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "ESLint found code quality issues that should be addressed." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Auto-fix what you can:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm run lint:fix" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "2. **Review remaining issues manually**" >> $GITHUB_STEP_SUMMARY
+          echo "3. **Run full quality check:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm run quality" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: ESLint Success
+        if: success()
+        run: |
+          echo "## ✅ ESLint: All Checks Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No code quality issues found by ESLint." >> $GITHUB_STEP_SUMMARY
+
+  type-checking:
     runs-on: ubuntu-latest
+    name: TypeScript Type Checking
+
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "20.x"
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm ci
-      
-      - name: Check code formatting
-        run: npm run format:check
+
+      - name: Run TypeScript type checking
+        run: npm run type-check
+
+      - name: Type check results
+        if: failure()
+        run: |
+          echo "## ❌ TypeScript Type Errors" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "TypeScript found type errors that must be fixed." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
+          echo "1. Review the type errors above" >> $GITHUB_STEP_SUMMARY
+          echo "2. Fix type issues in the code" >> $GITHUB_STEP_SUMMARY
+          echo "3. Verify with: \`npm run type-check\`" >> $GITHUB_STEP_SUMMARY
+
+  dependency-audit:
+    runs-on: ubuntu-latest
+    name: Security Audit
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+        id: audit
+
+      - name: Audit results
+        if: failure()
+        run: |
+          echo "## 🔒 Security Vulnerabilities Found" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "npm audit found security vulnerabilities in dependencies." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### How to fix:" >> $GITHUB_STEP_SUMMARY
+          echo "1. **Auto-fix vulnerabilities:**" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm audit fix" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "2. **For high/critical issues that can't be auto-fixed:**" >> $GITHUB_STEP_SUMMARY
+          echo "   - Review each vulnerability manually" >> $GITHUB_STEP_SUMMARY
+          echo "   - Update dependencies or find alternatives" >> $GITHUB_STEP_SUMMARY
+          echo "   - Consider using \`npm audit fix --force\` as last resort" >> $GITHUB_STEP_SUMMARY
+
+      - name: Audit success
+        if: success()
+        run: |
+          echo "## ✅ Security Audit: No Vulnerabilities" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No security vulnerabilities found in dependencies." >> $GITHUB_STEP_SUMMARY
+
+  build-test:
+    runs-on: ubuntu-latest
+    name: Build Verification
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Verify build outputs
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "❌ dist directory not created"
+            exit 1
+          fi
+
+          if [ ! -f "dist/index.js" ]; then
+            echo "❌ dist/index.js not found"
+            exit 1
+          fi
+
+          if [ ! -f "dist/index.d.ts" ]; then
+            echo "❌ dist/index.d.ts not found" 
+            exit 1
+          fi
+
+          echo "✅ All build outputs present"
+
+      - name: Check bundle size
+        run: |
+          MAIN_JS_SIZE=$(stat -c%s "dist/index.js" 2>/dev/null || stat -f%z "dist/index.js")
+          echo "Bundle size: $MAIN_JS_SIZE bytes"
+
+          # Warn if bundle gets too large (>500KB)
+          if [ "$MAIN_JS_SIZE" -gt 512000 ]; then
+            echo "## ⚠️ Bundle Size Warning" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The main bundle is getting large: ${MAIN_JS_SIZE} bytes" >> $GITHUB_STEP_SUMMARY
+            echo "Consider optimizing bundle size if this continues to grow." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## 📦 Bundle Size: ${MAIN_JS_SIZE} bytes" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  quality-summary:
+    runs-on: ubuntu-latest
+    name: Code Quality Summary
+    needs: [formatting, linting, type-checking, dependency-audit, build-test]
+    if: always()
+
+    steps:
+      - name: Quality Summary
+        run: |
+          echo "## 📋 Code Quality Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ needs.formatting.result }}" = "success" ]; then
+            echo "✅ **Formatting**: All files properly formatted" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Formatting**: Issues found - run \`npm run format\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.linting.result }}" = "success" ]; then
+            echo "✅ **Linting**: No ESLint issues" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Linting**: Issues found - run \`npm run lint:fix\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.type-checking.result }}" = "success" ]; then
+            echo "✅ **Type Checking**: No TypeScript errors" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Type Checking**: Errors found - fix type issues" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.dependency-audit.result }}" = "success" ]; then
+            echo "✅ **Security**: No vulnerabilities found" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🔒 **Security**: Vulnerabilities found - run \`npm audit fix\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ "${{ needs.build-test.result }}" = "success" ]; then
+            echo "✅ **Build**: Project builds successfully" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Build**: Build failed - check compilation errors" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Quick Fix Commands" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "# Fix most issues automatically:" >> $GITHUB_STEP_SUMMARY
+          echo "npm run format && npm run lint:fix" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "# Run full quality check:" >> $GITHUB_STEP_SUMMARY
+          echo "npm run quality" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+      - name: Set overall result
+        run: |
+          # Fail this job if any critical checks failed
+          if [ "${{ needs.type-checking.result }}" != "success" ] || [ "${{ needs.build-test.result }}" != "success" ]; then
+            echo "Critical quality checks failed"
+            exit 1
+          fi
+
+          # Warn about non-critical issues
+          if [ "${{ needs.formatting.result }}" != "success" ] || [ "${{ needs.linting.result }}" != "success" ]; then
+            echo "Code quality issues found but not blocking"
+          fi

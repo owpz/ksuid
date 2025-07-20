@@ -59,14 +59,14 @@ test("Uint128 decrement underflow", () => {
 
 test("Uint128 addition operations", () => {
   const a = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000005", "hex"),
+    Buffer.from("00000000000000000000000000000005", "hex")
   );
   const b = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000003", "hex"),
+    Buffer.from("00000000000000000000000000000003", "hex")
   );
   const result = a.add(b);
   const expected = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000008", "hex"),
+    Buffer.from("00000000000000000000000000000008", "hex")
   );
 
   assert.is(result.compare(expected), 0);
@@ -75,10 +75,10 @@ test("Uint128 addition operations", () => {
 test("Uint128 addition with carry", () => {
   // Test carry propagation across 64-bit boundary
   const a = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000000", "hex"),
+    Buffer.from("00000000000000000000000000000000", "hex")
   );
   const b = Uint128.makeUint128FromPayload(
-    Buffer.from("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "hex"),
+    Buffer.from("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "hex")
   );
   const one = Uint128.one();
 
@@ -90,14 +90,14 @@ test("Uint128 addition with carry", () => {
 
 test("Uint128 subtraction operations", () => {
   const a = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000008", "hex"),
+    Buffer.from("00000000000000000000000000000008", "hex")
   );
   const b = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000003", "hex"),
+    Buffer.from("00000000000000000000000000000003", "hex")
   );
   const result = a.sub(b);
   const expected = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000005", "hex"),
+    Buffer.from("00000000000000000000000000000005", "hex")
   );
 
   assert.is(result.compare(expected), 0);
@@ -146,7 +146,7 @@ test("Uint128 buffer round-trip", () => {
     const roundTrip = uint128.bytes();
     assert.ok(
       buffer.equals(roundTrip),
-      `Buffer round-trip failed for ${buffer.toString("hex")}`,
+      `Buffer round-trip failed for ${buffer.toString("hex")}`
     );
   }
 });
@@ -162,7 +162,7 @@ test("Uint128 invalid buffer length", () => {
   for (const buffer of invalidBuffers) {
     assert.throws(
       () => Uint128.makeUint128FromPayload(buffer),
-      `Should throw for buffer length ${buffer.length}`,
+      `Should throw for buffer length ${buffer.length}`
     );
   }
 });
@@ -172,14 +172,14 @@ test("Uint128 KSUID payload conversion", () => {
 
   // Test static method
   const uint128 = Uint128.uint128Payload(
-    Buffer.concat([Buffer.alloc(4), testBuffer]),
+    Buffer.concat([Buffer.alloc(4), testBuffer])
   );
   assert.ok(uint128.bytes().equals(testBuffer));
 });
 
 test("Uint128 KSUID generation", () => {
   const uint128 = Uint128.makeUint128FromPayload(
-    Buffer.from("0123456789ABCDEF0123456789ABCDEF", "hex"),
+    Buffer.from("0123456789ABCDEF0123456789ABCDEF", "hex")
   );
   const timestamp = 0x12345678;
 
@@ -193,15 +193,15 @@ test("Uint128 KSUID generation", () => {
 test("Uint128 high precision arithmetic", () => {
   // Test arithmetic with high-precision values
   const highValue = Uint128.makeUint128FromPayload(
-    Buffer.from("FFFFFFFFFFFFFFF000000000000000FF", "hex"),
+    Buffer.from("FFFFFFFFFFFFFFF000000000000000FF", "hex")
   );
   const increment = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000001", "hex"),
+    Buffer.from("00000000000000000000000000000001", "hex")
   );
 
   const result = highValue.add(increment);
   const expected = Uint128.makeUint128FromPayload(
-    Buffer.from("FFFFFFFFFFFFFFF00000000000000100", "hex"),
+    Buffer.from("FFFFFFFFFFFFFFF00000000000000100", "hex")
   );
 
   assert.is(result.compare(expected), 0);
@@ -210,13 +210,13 @@ test("Uint128 high precision arithmetic", () => {
 test("Uint128 carry propagation edge cases", () => {
   // Test multiple carry propagations
   const nearCarry = Uint128.makeUint128FromPayload(
-    Buffer.from("000000000000000FFFFFFFFFFFFFFFFF", "hex"),
+    Buffer.from("000000000000000FFFFFFFFFFFFFFFFF", "hex")
   );
   const one = Uint128.one();
 
   const result = nearCarry.add(one);
   const expected = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000100000000000000000", "hex"),
+    Buffer.from("00000000000000100000000000000000", "hex")
   );
 
   assert.is(result.compare(expected), 0);
@@ -234,11 +234,11 @@ test("Uint128 performance with large operations", () => {
   const end = Date.now();
   assert.ok(
     end - start < 100,
-    "10k increment operations should complete within 100ms",
+    "10k increment operations should complete within 100ms"
   );
 
   const expected = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000002710", "hex"),
+    Buffer.from("00000000000000000000000000002710", "hex")
   );
   assert.is(value.compare(expected), 0);
 });

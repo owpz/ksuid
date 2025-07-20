@@ -2,105 +2,105 @@ name: API Contract Check
 
 on:
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
     types: [opened, synchronize, reopened]
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 jobs:
   api-contract:
     runs-on: ubuntu-latest
     name: API Contract Verification
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build project
-      run: npm run build
-      
-    - name: Run API Contract Tests
-      id: contract-tests
-      run: npm run test:contract
-      
-    - name: Contract Test Results
-      if: always()
-      run: |
-        if [ "${{ steps.contract-tests.outcome }}" = "success" ]; then
-          echo "## ✅ API Contract: STABLE" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "No breaking changes detected in this PR." >> $GITHUB_STEP_SUMMARY
-          echo "The API contract is stable and compatible." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Safe for:** MINOR or PATCH version releases" >> $GITHUB_STEP_SUMMARY
-        else
-          echo "## ❌ API Contract: VIOLATIONS DETECTED" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**⚠️ Breaking changes detected!**" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "This PR contains changes that break the public API contract." >> $GITHUB_STEP_SUMMARY
-          echo "These changes will require a **MAJOR version bump** (e.g., 2.0.0)." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "1. **Review the test failures** in the API Contract Tests step above" >> $GITHUB_STEP_SUMMARY
-          echo "2. **Check the [API Versioning Policy](docs/api-versioning.md)** for guidance" >> $GITHUB_STEP_SUMMARY
-          echo "3. **Decide if these are intentional breaking changes:**" >> $GITHUB_STEP_SUMMARY
-          echo "   - If **YES**: Plan for major version release and update documentation" >> $GITHUB_STEP_SUMMARY
-          echo "   - If **NO**: Fix the compatibility issues to maintain backward compatibility" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### For Intentional Breaking Changes:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Plan major version release (e.g., 1.0.0 → 2.0.0)" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Update API contract tests to reflect new API" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Document breaking changes in CHANGELOG.md" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Provide migration guide for users" >> $GITHUB_STEP_SUMMARY
-          echo "- [ ] Consider deprecation period for removed features" >> $GITHUB_STEP_SUMMARY
-        fi
 
-    - name: Comment on PR
-      if: failure() && github.event_name == 'pull_request'
-      uses: actions/github-script@v7
-      with:
-        script: |
-          const comment = `## 🚨 API Contract Violation Detected
-          
-          This PR contains **breaking changes** that will require a **MAJOR version bump**.
-          
-          ### What this means:
-          - The public API contract has been modified in a backward-incompatible way
-          - Users upgrading to this version will need to update their code
-          - This requires a major version release (e.g., 1.x.x → 2.0.0)
-          
-          ### Review the failures:
-          Check the "API Contract Verification" job details above for specific test failures.
-          
-          ### Next steps:
-          1. **If these breaking changes are intentional:**
-             - Review the [API Versioning Policy](docs/api-versioning.md)
-             - Plan for a major version release
-             - Update the API contract tests to match the new API
-             - Document migration steps for users
-          
-          2. **If these should not be breaking changes:**
-             - Modify your changes to maintain backward compatibility
-             - Ensure all contract tests pass
-          
-          ### Questions?
-          See the [API Versioning Policy](docs/api-versioning.md) for detailed guidance on what constitutes breaking changes.`;
-          
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: comment
-          });
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.x"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Run API Contract Tests
+        id: contract-tests
+        run: npm run test:contract
+
+      - name: Contract Test Results
+        if: always()
+        run: |
+          if [ "${{ steps.contract-tests.outcome }}" = "success" ]; then
+            echo "## ✅ API Contract: STABLE" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "No breaking changes detected in this PR." >> $GITHUB_STEP_SUMMARY
+            echo "The API contract is stable and compatible." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Safe for:** MINOR or PATCH version releases" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ API Contract: VIOLATIONS DETECTED" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**⚠️ Breaking changes detected!**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "This PR contains changes that break the public API contract." >> $GITHUB_STEP_SUMMARY
+            echo "These changes will require a **MAJOR version bump** (e.g., 2.0.0)." >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Next Steps:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "1. **Review the test failures** in the API Contract Tests step above" >> $GITHUB_STEP_SUMMARY
+            echo "2. **Check the [API Versioning Policy](docs/api-versioning.md)** for guidance" >> $GITHUB_STEP_SUMMARY
+            echo "3. **Decide if these are intentional breaking changes:**" >> $GITHUB_STEP_SUMMARY
+            echo "   - If **YES**: Plan for major version release and update documentation" >> $GITHUB_STEP_SUMMARY
+            echo "   - If **NO**: Fix the compatibility issues to maintain backward compatibility" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### For Intentional Breaking Changes:" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- [ ] Plan major version release (e.g., 1.0.0 → 2.0.0)" >> $GITHUB_STEP_SUMMARY
+            echo "- [ ] Update API contract tests to reflect new API" >> $GITHUB_STEP_SUMMARY
+            echo "- [ ] Document breaking changes in CHANGELOG.md" >> $GITHUB_STEP_SUMMARY
+            echo "- [ ] Provide migration guide for users" >> $GITHUB_STEP_SUMMARY
+            echo "- [ ] Consider deprecation period for removed features" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Comment on PR
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## 🚨 API Contract Violation Detected
+
+            This PR contains **breaking changes** that will require a **MAJOR version bump**.
+
+            ### What this means:
+            - The public API contract has been modified in a backward-incompatible way
+            - Users upgrading to this version will need to update their code
+            - This requires a major version release (e.g., 1.x.x → 2.0.0)
+
+            ### Review the failures:
+            Check the "API Contract Verification" job details above for specific test failures.
+
+            ### Next steps:
+            1. **If these breaking changes are intentional:**
+               - Review the [API Versioning Policy](docs/api-versioning.md)
+               - Plan for a major version release
+               - Update the API contract tests to match the new API
+               - Document migration steps for users
+
+            2. **If these should not be breaking changes:**
+               - Modify your changes to maintain backward compatibility
+               - Ensure all contract tests pass
+
+            ### Questions?
+            See the [API Versioning Policy](docs/api-versioning.md) for detailed guidance on what constitutes breaking changes.`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

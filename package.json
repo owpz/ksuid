@@ -21,8 +21,12 @@
     "perf:compare": "ts-node test/performance/compare.ts",
     "prepublishOnly": "npm run build",
     "cli": "ts-node src/cli.ts",
-    "lint": "echo 'Linting not configured yet'",
-    "type-check": "tsc --noEmit"
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "quality": "npm run format:check && npm run lint && npm run type-check"
   },
   "keywords": [
     "ksuid",
@@ -47,7 +51,14 @@
     "base-x": "^5.0.0"
   },
   "devDependencies": {
+    "@types/eslint": "^9.6.1",
     "@types/node": "^24.0.15",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.3",
+    "prettier": "^3.6.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "uvu": "^0.5.6"

@@ -36,7 +36,7 @@ test("Base62 round-trip for max buffer", () => {
 test("Base62 round-trip for random buffer", () => {
   const original = Buffer.from(
     "05a9a844669f7efd7b6fe812278486085878563d",
-    "hex",
+    "hex"
   );
   assert.is(original.length, 20);
   const encoded = Base62.encode(original);
@@ -51,31 +51,31 @@ test("Base62.encode() throws for non-20-byte buffer", () => {
   const badBuf = Buffer.alloc(19);
   assert.throws(
     () => Base62.encode(badBuf),
-    /Invalid KSUID buffer: expected 20 bytes, got 19/,
+    /Invalid KSUID buffer: expected 20 bytes, got 19/
   );
 
   const tooLong = Buffer.alloc(21);
   assert.throws(
     () => Base62.encode(tooLong),
-    /Invalid KSUID buffer: expected 20 bytes, got 21/,
+    /Invalid KSUID buffer: expected 20 bytes, got 21/
   );
 });
 
 test("Base62.decode() throws for non-27-character string", () => {
   assert.throws(
     () => Base62.decode("short"),
-    /Invalid KSUID string: expected 27 characters, got 5/,
+    /Invalid KSUID string: expected 27 characters, got 5/
   );
   assert.throws(
     () => Base62.decode("a".repeat(28)),
-    /Invalid KSUID string: expected 27 characters, got 28/,
+    /Invalid KSUID string: expected 27 characters, got 28/
   );
 });
 
 test("Base62.decode() throws for invalid character", () => {
   assert.throws(
     () => Base62.decode("!".repeat(27)),
-    /Invalid KSUID string: invalid character '!' at position 0/,
+    /Invalid KSUID string: invalid character '!' at position 0/
   );
 });
 

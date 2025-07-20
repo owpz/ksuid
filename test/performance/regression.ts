@@ -30,7 +30,7 @@ const REGRESSION_TESTS: RegressionTest[] = [
     iterations: 50000,
     operation: (() => {
       const testStrings = Array.from({ length: 1000 }, () =>
-        KSUID.random().toString(),
+        KSUID.random().toString()
       );
       let index = 0;
       return () => KSUID.parse(testStrings[index++ % testStrings.length]);
@@ -76,12 +76,12 @@ async function runRegressionTest(test: RegressionTest): Promise<boolean> {
   const percentage = Math.round((opsPerSec / test.minOpsPerSec) * 100);
 
   console.log(
-    `   ${status} ${opsPerSec.toLocaleString()} ops/sec (${percentage}% of minimum)`,
+    `   ${status} ${opsPerSec.toLocaleString()} ops/sec (${percentage}% of minimum)`
   );
 
   if (!passed) {
     console.error(
-      `   ❌ Performance regression detected! Expected ≥${test.minOpsPerSec.toLocaleString()} ops/sec`,
+      `   ❌ Performance regression detected! Expected ≥${test.minOpsPerSec.toLocaleString()} ops/sec`
     );
   }
 
@@ -98,7 +98,7 @@ async function main(): Promise<void> {
     allPassed = allPassed && passed;
 
     // Small delay between tests
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
   }
 
   console.log("\n📊 Regression Test Summary:");
@@ -118,7 +118,7 @@ async function main(): Promise<void> {
 
   if (memoryUsage > 50) {
     console.warn(
-      "⚠️  Memory usage is higher than expected for regression tests",
+      "⚠️  Memory usage is higher than expected for regression tests"
     );
   }
 

@@ -177,7 +177,7 @@ test("CompressedSet type signatures", () => {
   assert.ok(fromBuffer instanceof CompressedSet);
   assert.ok(iter instanceof CompressedSetIter);
   assert.ok(Array.isArray(array));
-  array.forEach((k) => assert.ok(k instanceof KSUID));
+  array.forEach(k => assert.ok(k instanceof KSUID));
   assert.ok(Buffer.isBuffer(buffer));
 });
 
@@ -219,11 +219,11 @@ test("KSUIDError type signatures", () => {
   // Static factory methods
   const stringLengthError: KSUIDError = KSUIDError.invalidStringLength(
     "test",
-    27,
+    27
   );
   const bufferLengthError: KSUIDError = KSUIDError.invalidBufferLength(
     Buffer.alloc(10),
-    20,
+    20
   );
   const characterError: KSUIDError = KSUIDError.invalidCharacter("!", 0);
   const timestampError: KSUIDError = KSUIDError.invalidTimestamp(-1);
@@ -384,12 +384,12 @@ test("Generic type constraints", () => {
       input: "test",
       expected: "expected",
       // actual and cause are optional
-    },
+    }
   );
 
   const errorMinimal = new KSUIDError(
     "message",
-    KSUID_ERROR_CODES.INVALID_LENGTH,
+    KSUID_ERROR_CODES.INVALID_LENGTH
   );
 
   assert.type(validCode, "string");

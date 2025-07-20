@@ -42,7 +42,7 @@ export class KSUID {
       throw KSUIDError.invalidBufferLength(
         payload,
         PAYLOAD_LENGTH,
-        "KSUID payload",
+        "KSUID payload"
       );
     }
 

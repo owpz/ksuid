@@ -1,6 +1,7 @@
 # Go-TypeScript Compatibility Validation
 
-This directory contains tools to validate compatibility between the Go and TypeScript KSUID implementations.
+This directory contains tools to validate compatibility between the Go and TypeScript KSUID
+implementations.
 
 ## Test Vector Generator
 
@@ -131,7 +132,8 @@ All test vectors were generated using the Go reference implementation at:
 - **Commit**: `d33724947fcfba7949906c2b1821e96a1c8d06e7`
 - **Date**: Latest as of 2025-07-20
 
-This ensures that the TypeScript implementation is validated against the canonical Go implementation.
+This ensures that the TypeScript implementation is validated against the canonical Go
+implementation.
 
 ## Contributing
 
@@ -142,4 +144,5 @@ If you find any compatibility issues:
 3. Submit an issue with both Go and TypeScript outputs
 4. Include specific KSUID values that demonstrate the issue
 
-For questions about compatibility validation, please refer to the main README.md file or open an issue on the project repository.
+For questions about compatibility validation, please refer to the main README.md file or open an
+issue on the project repository.

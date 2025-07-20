@@ -18,7 +18,7 @@ import { Buffer } from "buffer";
  */
 export class Sequence {
   private seed: KSUID;
-  private count: number = 0;
+  private count = 0;
 
   constructor(options: { seed: KSUID }) {
     this.seed = options.seed;
@@ -57,10 +57,10 @@ export class Sequence {
     const seedBuffer = this.seed.toBuffer();
 
     const min = KSUID.fromBytes(
-      this.withSequenceNumber(Buffer.from(seedBuffer), count),
+      this.withSequenceNumber(Buffer.from(seedBuffer), count)
     );
     const max = KSUID.fromBytes(
-      this.withSequenceNumber(Buffer.from(seedBuffer), 0xffff),
+      this.withSequenceNumber(Buffer.from(seedBuffer), 0xffff)
     );
 
     return { min, max };

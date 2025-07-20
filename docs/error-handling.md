@@ -1,12 +1,14 @@
 # Error Handling Guide
 
-The @owpz/ksuid library provides comprehensive error handling with structured error information to help developers build robust applications.
+The @owpz/ksuid library provides comprehensive error handling with structured error information to
+help developers build robust applications.
 
 ## Error Types
 
 ### KSUIDError Class
 
-All errors thrown by the library are instances of `KSUIDError`, which extends the native `Error` class with additional structured information:
+All errors thrown by the library are instances of `KSUIDError`, which extends the native `Error`
+class with additional structured information:
 
 ```typescript
 import { KSUIDError, isKSUIDError, KSUID_ERROR_CODES } from "@owpz/ksuid";
@@ -232,7 +234,7 @@ if (ksuid1.isNil()) {
 class ApplicationError extends Error {
   constructor(
     message: string,
-    public readonly originalError: KSUIDError,
+    public readonly originalError: KSUIDError
   ) {
     super(message);
     this.name = "ApplicationError";

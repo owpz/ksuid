@@ -239,7 +239,7 @@ test("CompressedSet class API contract", () => {
 
   const array = compressed.toArray();
   assert.ok(Array.isArray(array));
-  array.forEach((ksuid) => assert.ok(ksuid instanceof KSUID));
+  array.forEach(ksuid => assert.ok(ksuid instanceof KSUID));
 
   assert.ok(Buffer.isBuffer(compressed.toBuffer()));
 });
@@ -344,7 +344,7 @@ test("Sorting functions API contract", () => {
   const sortResult = sort(ksuidsToSort);
   assert.is(sortResult, undefined); // sort returns void
   assert.is(ksuidsToSort.length, ksuids.length);
-  ksuidsToSort.forEach((ksuid) => assert.ok(ksuid instanceof KSUID));
+  ksuidsToSort.forEach(ksuid => assert.ok(ksuid instanceof KSUID));
 
   // isSorted(KSUID[]): boolean
   assert.type(isSorted(ksuids), "boolean");

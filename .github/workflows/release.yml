@@ -14,14 +14,14 @@ jobs:
       prerelease: ${{ steps.check_prerelease.outputs.prerelease }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Extract version from tag
         id: extract_version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Extracted version: $VERSION"
-      
+
       - name: Check if prerelease
         id: check_prerelease
         run: |
@@ -30,16 +30,16 @@ jobs:
           else
             echo "prerelease=true" >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Verify package.json version matches tag
         run: |
           PKG_VERSION=$(node -p "require('./package.json').version")
@@ -47,13 +47,13 @@ jobs:
             echo "Error: Tag version doesn't match package.json version"
             exit 1
           fi
-      
+
       - name: Run full test suite
         run: npm test
-      
+
       - name: Build package
         run: npm run build
-      
+
       - name: Verify build artifacts
         run: |
           if [ ! -d "dist" ] || [ -z "$(ls -A dist)" ]; then
@@ -70,14 +70,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for changelog
-      
+          fetch-depth: 0 # Fetch all history for changelog
+
       - name: Generate changelog
         id: changelog
         run: |
           # Extract changelog section for this version
           VERSION="${{ needs.verify.outputs.version }}"
-          
+
           # Create release notes from CHANGELOG.md or generate basic ones
           if [ -f "CHANGELOG.md" ]; then
             # Extract section for this version from CHANGELOG.md
@@ -89,13 +89,13 @@ jobs:
             git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD >> release_notes.md || \
             git log --pretty=format:"- %s" --max-count=10 >> release_notes.md
           fi
-          
+
           # Add compatibility information
           echo "" >> release_notes.md
           echo "## Go Compatibility" >> release_notes.md
           echo "✅ **100% compatible** with segmentio/ksuid Go implementation" >> release_notes.md
           echo "✅ All cross-validation tests passing" >> release_notes.md
-      
+
       - name: Create Release
         uses: actions/create-release@v1
         env:
@@ -113,20 +113,20 @@ jobs:
     needs: [verify, create-release]
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
           cache: "npm"
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build package
         run: npm run build
-      
+
       - name: Publish to npm
         run: |
           if [ "${{ needs.verify.outputs.prerelease }}" = "true" ]; then

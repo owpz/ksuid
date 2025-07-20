@@ -69,15 +69,15 @@ test("CompressedSet iterator basic functionality", () => {
   const ksuids = [
     KSUID.fromParts(
       95004740,
-      Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+      Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
     ),
     KSUID.fromParts(
       95004741,
-      Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+      Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
     ),
     KSUID.fromParts(
       95004742,
-      Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+      Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
     ),
   ];
 
@@ -120,11 +120,11 @@ test("CompressedSet preserves ordering", () => {
   console.log("Expected length:", 10, "Actual length:", result.length);
   console.log(
     "Original KSUIDs:",
-    ksuids.map((k) => k.toString()),
+    ksuids.map(k => k.toString())
   );
   console.log(
     "Result KSUIDs:",
-    result.map((k) => k.toString()),
+    result.map(k => k.toString())
   );
 
   // Should be back in original order (sorted)
@@ -218,11 +218,11 @@ test("CompressedSet handles mixed timestamp patterns", () => {
 test("CompressedSet toString format", () => {
   const ksuid1 = KSUID.fromParts(
     95004740,
-    Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+    Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
   );
   const ksuid2 = KSUID.fromParts(
     95004741,
-    Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+    Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
   );
 
   const set = CompressedSet.compress(ksuid1, ksuid2);

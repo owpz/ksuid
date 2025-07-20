@@ -32,21 +32,21 @@ async function runCLI(args: string[]): Promise<CLIResult> {
       {
         stdio: "pipe",
         cwd: process.cwd(),
-      },
+      }
     );
 
     let stdout = "";
     let stderr = "";
 
-    child.stdout?.on("data", (data) => {
+    child.stdout?.on("data", data => {
       stdout += data.toString();
     });
 
-    child.stderr?.on("data", (data) => {
+    child.stderr?.on("data", data => {
       stderr += data.toString();
     });
 
-    child.on("close", (code) => {
+    child.on("close", code => {
       clearTimeout(timeout);
       resolve({
         stdout,
@@ -55,7 +55,7 @@ async function runCLI(args: string[]): Promise<CLIResult> {
       });
     });
 
-    child.on("error", (error) => {
+    child.on("error", error => {
       clearTimeout(timeout);
       reject(error);
     });

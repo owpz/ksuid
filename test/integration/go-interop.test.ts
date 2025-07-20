@@ -50,12 +50,12 @@ test("Go interop - deterministic KSUID generation", () => {
     assert.is(
       ksuid.toString(),
       testCase.expectedString,
-      `${testCase.description}: string mismatch`,
+      `${testCase.description}: string mismatch`
     );
     assert.is(
       ksuid.toBuffer().toString("hex"),
       testCase.expectedRaw,
-      `${testCase.description}: raw bytes mismatch`,
+      `${testCase.description}: raw bytes mismatch`
     );
 
     // Verify parsing back works
@@ -63,11 +63,11 @@ test("Go interop - deterministic KSUID generation", () => {
     assert.is(
       parsed.timestamp,
       testCase.timestamp,
-      `${testCase.description}: timestamp parsing failed`,
+      `${testCase.description}: timestamp parsing failed`
     );
     assert.ok(
       parsed.payload.equals(payload),
-      `${testCase.description}: payload parsing failed`,
+      `${testCase.description}: payload parsing failed`
     );
   }
 });
@@ -76,7 +76,7 @@ test("Go interop - sequence generation compatibility", () => {
   // Test vector: Go-generated sequence with known seed
   const seedKSUID = KSUID.fromParts(
     95004740,
-    Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+    Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
   );
 
   // Note: Sequence.next() applies sequence numbers to the seed, starting from 0
@@ -96,7 +96,7 @@ test("Go interop - sequence generation compatibility", () => {
     assert.is(
       ksuid.timestamp,
       seedKSUID.timestamp,
-      "All sequence items should have same timestamp as seed",
+      "All sequence items should have same timestamp as seed"
     );
   }
 
@@ -107,7 +107,7 @@ test("Go interop - sequence generation compatibility", () => {
     assert.is(
       current.compare(next),
       -1,
-      `Sequence item ${i} should be less than item ${i + 1}`,
+      `Sequence item ${i} should be less than item ${i + 1}`
     );
   }
 
@@ -118,7 +118,7 @@ test("Go interop - sequence generation compatibility", () => {
     assert.is(
       next!.toString(),
       generated[i],
-      `Second sequence should generate same results`,
+      `Second sequence should generate same results`
     );
   }
 });
@@ -159,12 +159,12 @@ test("Go interop - next/prev operations with edge cases", () => {
     assert.is(
       next.toString(),
       testCase.expectedNext,
-      `${testCase.description}: next() mismatch`,
+      `${testCase.description}: next() mismatch`
     );
     assert.is(
       prev.toString(),
       testCase.expectedPrev,
-      `${testCase.description}: prev() mismatch`,
+      `${testCase.description}: prev() mismatch`
     );
 
     // Verify ordering properties
@@ -193,7 +193,7 @@ test("Go interop - compressed set with real Go test vectors", () => {
   assert.is(
     decompressed.length,
     originalKSUIDs.length,
-    "Compressed set should preserve all KSUIDs",
+    "Compressed set should preserve all KSUIDs"
   );
 
   // Should be properly sorted
@@ -202,7 +202,7 @@ test("Go interop - compressed set with real Go test vectors", () => {
     assert.is(
       decompressed[i].compare(expectedSorted[i]),
       0,
-      `Decompressed KSUID ${i} should match sorted original`,
+      `Decompressed KSUID ${i} should match sorted original`
     );
   }
 
@@ -213,14 +213,14 @@ test("Go interop - compressed set with real Go test vectors", () => {
   assert.is(
     redecompressed.length,
     decompressed.length,
-    "Round-trip should preserve count",
+    "Round-trip should preserve count"
   );
 
   for (let i = 0; i < redecompressed.length; i++) {
     assert.is(
       redecompressed[i].compare(decompressed[i]),
       0,
-      `Round-trip should preserve KSUID ${i}`,
+      `Round-trip should preserve KSUID ${i}`
     );
   }
 });
@@ -248,11 +248,11 @@ test("Go interop - sorting compatibility with Go ordering", () => {
   const sorted = [...unsortedKSUIDs];
   sort(sorted);
 
-  const sortedStrings = sorted.map((k) => k.toString());
+  const sortedStrings = sorted.map(k => k.toString());
   assert.equal(
     sortedStrings,
     expectedOrder,
-    "Sort order should match Go implementation",
+    "Sort order should match Go implementation"
   );
 });
 
@@ -263,7 +263,7 @@ test("Go interop - Base62 encoding edge cases", () => {
       description: "Leading zeros preservation",
       ksuid: KSUID.fromParts(
         0,
-        Buffer.from("00000000000000000000000000000001", "hex"),
+        Buffer.from("00000000000000000000000000000001", "hex")
       ),
       expectedLength: 27,
     },
@@ -286,7 +286,7 @@ test("Go interop - Base62 encoding edge cases", () => {
       assert.is(
         encoded.length,
         testCase.expectedLength,
-        `${testCase.description}: should have correct length`,
+        `${testCase.description}: should have correct length`
       );
     }
 
@@ -294,7 +294,7 @@ test("Go interop - Base62 encoding edge cases", () => {
       assert.is(
         encoded,
         testCase.expectedString,
-        `${testCase.description}: should match expected string`,
+        `${testCase.description}: should match expected string`
       );
     }
 
@@ -303,7 +303,7 @@ test("Go interop - Base62 encoding edge cases", () => {
     assert.is(
       decoded.compare(testCase.ksuid),
       0,
-      `${testCase.description}: round-trip should preserve value`,
+      `${testCase.description}: round-trip should preserve value`
     );
   }
 });
@@ -337,7 +337,7 @@ test("Go interop - timestamp conversion accuracy", () => {
     assert.is(
       actualUnixSeconds,
       testCase.expectedUnixSeconds,
-      `${testCase.description}: Unix timestamp conversion should match Go`,
+      `${testCase.description}: Unix timestamp conversion should match Go`
     );
   }
 });
@@ -357,7 +357,7 @@ test("Go interop - error handling compatibility", () => {
   for (const invalid of invalidStrings) {
     assert.throws(
       () => KSUID.parse(invalid),
-      `Invalid string "${invalid}" should throw error`,
+      `Invalid string "${invalid}" should throw error`
     );
   }
 
@@ -366,7 +366,7 @@ test("Go interop - error handling compatibility", () => {
     const result = KSUID.parseOrNil(invalid);
     assert.ok(
       result.isNil(),
-      `parseOrNil("${invalid}") should return nil KSUID`,
+      `parseOrNil("${invalid}") should return nil KSUID`
     );
   }
 
@@ -379,7 +379,7 @@ test("Go interop - binary format exact compatibility", () => {
   // Test that binary format matches Go byte-for-byte
   const testKSUID = KSUID.fromParts(
     0x05a9a844,
-    Buffer.from("669f7efd7b6fe812278486085878563d", "hex"),
+    Buffer.from("669f7efd7b6fe812278486085878563d", "hex")
   );
 
   const buffer = testKSUID.toBuffer();
@@ -396,11 +396,11 @@ test("Go interop - binary format exact compatibility", () => {
   const payloadBytes = buffer.subarray(4, 20);
   const expectedPayload = Buffer.from(
     "669f7efd7b6fe812278486085878563d",
-    "hex",
+    "hex"
   );
   assert.ok(
     payloadBytes.equals(expectedPayload),
-    "Payload should be encoded correctly",
+    "Payload should be encoded correctly"
   );
 
   // Complete buffer should match expected
@@ -408,7 +408,7 @@ test("Go interop - binary format exact compatibility", () => {
   assert.is(
     buffer.toString("hex"),
     expectedComplete,
-    "Complete buffer should match expected format",
+    "Complete buffer should match expected format"
   );
 });
 
@@ -434,7 +434,7 @@ test("Go interop - large dataset compatibility", () => {
     assert.is(
       reparsed.compare(ksuid),
       0,
-      "All KSUIDs should round-trip correctly",
+      "All KSUIDs should round-trip correctly"
     );
   }
 
@@ -444,12 +444,12 @@ test("Go interop - large dataset compatibility", () => {
     assert.is(
       sorted[i].timestamp,
       sorted[i + 1].timestamp,
-      "All KSUIDs should have same timestamp",
+      "All KSUIDs should have same timestamp"
     );
     assert.is(
       sorted[i].compare(sorted[i + 1]),
       -1,
-      "Sorted KSUIDs should be in ascending order",
+      "Sorted KSUIDs should be in ascending order"
     );
   }
 
@@ -460,7 +460,7 @@ test("Go interop - large dataset compatibility", () => {
   assert.is(
     decompressed.length,
     ksuids.length,
-    "Compressed set should preserve all KSUIDs",
+    "Compressed set should preserve all KSUIDs"
   );
 
   // Verify decompressed KSUIDs are correct
@@ -468,7 +468,7 @@ test("Go interop - large dataset compatibility", () => {
     assert.is(
       decompressed[i].compare(sorted[i]),
       0,
-      `Decompressed KSUID ${i} should match sorted original`,
+      `Decompressed KSUID ${i} should match sorted original`
     );
   }
 
@@ -477,7 +477,7 @@ test("Go interop - large dataset compatibility", () => {
   const compressedSize = compressedSet.toBuffer().length;
   assert.ok(
     compressedSize < rawSize,
-    `Compressed size (${compressedSize}) should be less than raw size (${rawSize})`,
+    `Compressed size (${compressedSize}) should be less than raw size (${rawSize})`
   );
 });
 

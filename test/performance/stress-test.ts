@@ -32,7 +32,7 @@ class StressTest {
       memoryLimit?: number;
       expectedMinOps?: number;
       collectGarbage?: boolean;
-    } = {},
+    } = {}
   ): Promise<StressTestResult> {
     console.log(`🔥 Running stress test: ${testName} (${duration}s)`);
 
@@ -51,7 +51,7 @@ class StressTest {
       // Check memory limit
       if (options.memoryLimit && currentMemoryMB > options.memoryLimit) {
         console.warn(
-          `⚠️ Memory usage (${currentMemoryMB.toFixed(2)}MB) exceeded limit (${options.memoryLimit}MB)`,
+          `⚠️ Memory usage (${currentMemoryMB.toFixed(2)}MB) exceeded limit (${options.memoryLimit}MB)`
         );
       }
     }, 100);
@@ -69,7 +69,7 @@ class StressTest {
 
         // Yield occasionally to prevent blocking
         if (operations % 1000 === 0) {
-          await new Promise((resolve) => setImmediate(resolve));
+          await new Promise(resolve => setImmediate(resolve));
         }
       } catch (error) {
         errors++;
@@ -106,7 +106,7 @@ class StressTest {
 
     const status = success ? "✅ PASS" : "❌ FAIL";
     console.log(
-      `   ${status} - ${operations.toLocaleString()} ops (${opsPerSecond.toLocaleString()} ops/sec, Peak: ${memoryPeakMB.toFixed(1)}MB)`,
+      `   ${status} - ${operations.toLocaleString()} ops (${opsPerSecond.toLocaleString()} ops/sec, Peak: ${memoryPeakMB.toFixed(1)}MB)`
     );
 
     return result;
@@ -122,7 +122,7 @@ class StressTest {
         "| Peak MB".padEnd(10) +
         "| Errors".padEnd(8) +
         "| Status".padEnd(8) +
-        "|",
+        "|"
     );
     console.log(
       "|" +
@@ -137,7 +137,7 @@ class StressTest {
         "-".repeat(7) +
         "|" +
         "-".repeat(7) +
-        "|",
+        "|"
     );
 
     for (const result of this.results) {
@@ -146,11 +146,11 @@ class StressTest {
       const memFormatted = result.memoryPeakMB.toFixed(1).padEnd(9);
       const errorsFormatted = result.errors.toString().padEnd(7);
       const statusFormatted = (result.success ? "✅ PASS" : "❌ FAIL").padEnd(
-        7,
+        7
       );
 
       console.log(
-        `| ${result.testName.padEnd(23)} | ${opsFormatted} | ${totalFormatted} | ${memFormatted} | ${errorsFormatted} | ${statusFormatted} |`,
+        `| ${result.testName.padEnd(23)} | ${opsFormatted} | ${totalFormatted} | ${memFormatted} | ${errorsFormatted} | ${statusFormatted} |`
       );
     }
     console.log("=".repeat(90));
@@ -161,7 +161,7 @@ class StressTest {
   }
 
   getOverallSuccess(): boolean {
-    return this.results.every((r) => r.success);
+    return this.results.every(r => r.success);
   }
 }
 
@@ -180,12 +180,12 @@ async function runStressTests(): Promise<void> {
     () => {
       KSUID.random();
     },
-    { expectedMinOps: 50000, memoryLimit: 100 },
+    { expectedMinOps: 50000, memoryLimit: 100 }
   );
 
   // Test 2: Continuous parsing
   const testStrings = Array.from({ length: 1000 }, () =>
-    KSUID.random().toString(),
+    KSUID.random().toString()
   );
   let parseIndex = 0;
 
@@ -195,7 +195,7 @@ async function runStressTests(): Promise<void> {
     () => {
       KSUID.parse(testStrings[parseIndex++ % testStrings.length]);
     },
-    { expectedMinOps: 80000, memoryLimit: 50 },
+    { expectedMinOps: 80000, memoryLimit: 50 }
   );
 
   // Test 3: Memory pressure test
@@ -210,7 +210,7 @@ async function runStressTests(): Promise<void> {
         ksuids.splice(0, 10000);
       }
     },
-    { expectedMinOps: 40000, memoryLimit: 200 },
+    { expectedMinOps: 40000, memoryLimit: 200 }
   );
 
   // Test 4: Sequence generation under load
@@ -224,7 +224,7 @@ async function runStressTests(): Promise<void> {
         sequence.next();
       }
     },
-    { expectedMinOps: 5000, memoryLimit: 100 },
+    { expectedMinOps: 5000, memoryLimit: 100 }
   );
 
   // Test 5: Mixed operations (realistic workload)
@@ -253,7 +253,7 @@ async function runStressTests(): Promise<void> {
           break;
       }
     },
-    { expectedMinOps: 30000, memoryLimit: 150 },
+    { expectedMinOps: 30000, memoryLimit: 150 }
   );
 
   // Test 6: Concurrent operations simulation
@@ -268,7 +268,7 @@ async function runStressTests(): Promise<void> {
         Promise.resolve(KSUID.random()),
       ]);
     },
-    { expectedMinOps: 15000, memoryLimit: 100 },
+    { expectedMinOps: 15000, memoryLimit: 100 }
   );
 
   stressTest.printResults();
@@ -277,22 +277,22 @@ async function runStressTests(): Promise<void> {
   const results = stressTest.getResults();
   const totalOperations = results.reduce((sum, r) => sum + r.operations, 0);
   const averageOpsPerSec = Math.round(
-    results.reduce((sum, r) => sum + r.opsPerSecond, 0) / results.length,
+    results.reduce((sum, r) => sum + r.opsPerSecond, 0) / results.length
   );
-  const maxMemoryUsage = Math.max(...results.map((r) => r.memoryPeakMB));
+  const maxMemoryUsage = Math.max(...results.map(r => r.memoryPeakMB));
   const totalErrors = results.reduce((sum, r) => sum + r.errors, 0);
 
   console.log("\n📈 Stress Test Summary:");
   console.log(`🎯 Total Operations: ${totalOperations.toLocaleString()}`);
   console.log(
-    `🎯 Average Throughput: ${averageOpsPerSec.toLocaleString()} ops/sec`,
+    `🎯 Average Throughput: ${averageOpsPerSec.toLocaleString()} ops/sec`
   );
   console.log(`💾 Peak Memory Usage: ${maxMemoryUsage.toFixed(1)} MB`);
   console.log(`❌ Total Errors: ${totalErrors}`);
 
   const overallSuccess = stressTest.getOverallSuccess();
   console.log(
-    `📊 Overall Result: ${overallSuccess ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"}`,
+    `📊 Overall Result: ${overallSuccess ? "✅ ALL TESTS PASSED" : "❌ SOME TESTS FAILED"}`
   );
 
   // Production readiness assessment
@@ -300,11 +300,11 @@ async function runStressTests(): Promise<void> {
 
   if (averageOpsPerSec > 40000) {
     console.log(
-      "✅ High-throughput performance: Suitable for production workloads",
+      "✅ High-throughput performance: Suitable for production workloads"
     );
   } else {
     console.log(
-      "⚠️ Moderate performance: May require optimization for high-load scenarios",
+      "⚠️ Moderate performance: May require optimization for high-load scenarios"
     );
   }
 
@@ -334,7 +334,7 @@ async function runStressTests(): Promise<void> {
         details: results,
       },
       null,
-      2,
+      2
     );
     require("fs").writeFileSync("stress-test-results.json", resultsJson);
     console.log("📊 Stress test results exported to stress-test-results.json");

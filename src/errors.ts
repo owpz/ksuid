@@ -42,7 +42,7 @@ export class KSUIDError extends Error {
       expected?: string;
       actual?: string;
       cause?: Error;
-    } = {},
+    } = {}
   ) {
     super(message);
 
@@ -71,10 +71,10 @@ export class KSUIDError extends Error {
       `Invalid KSUID string: expected ${expected} characters, got ${input.length}`,
       KSUID_ERROR_CODES.INVALID_LENGTH,
       {
-        input: input,
+        input,
         expected: `${expected} characters`,
         actual: `${input.length} characters`,
-      },
+      }
     );
   }
 
@@ -84,7 +84,7 @@ export class KSUIDError extends Error {
   static invalidBufferLength(
     buffer: Buffer,
     expected: number,
-    type: string = "KSUID",
+    type = "KSUID"
   ): KSUIDError {
     return new KSUIDError(
       `Invalid ${type}: expected ${expected} bytes, got ${buffer.length}`,
@@ -93,7 +93,7 @@ export class KSUIDError extends Error {
         input: buffer,
         expected: `${expected} bytes`,
         actual: `${buffer.length} bytes`,
-      },
+      }
     );
   }
 
@@ -113,7 +113,7 @@ export class KSUIDError extends Error {
         input: char,
         expected: "valid Base62 character",
         actual: `character '${displayChar}'`,
-      },
+      }
     );
   }
 
@@ -131,7 +131,7 @@ export class KSUIDError extends Error {
         input: timestamp,
         expected: "uint32 (0 to 4294967295)",
         actual: displayTimestamp,
-      },
+      }
     );
   }
 
@@ -143,10 +143,10 @@ export class KSUIDError extends Error {
       `Invalid ${paramName}: cannot be null or undefined`,
       KSUID_ERROR_CODES.INVALID_INPUT,
       {
-        input: input,
+        input,
         expected: "non-null value",
         actual: String(input),
-      },
+      }
     );
   }
 
@@ -160,7 +160,7 @@ export class KSUIDError extends Error {
       {
         expected: "valid compressed data format",
         actual: "corrupted or invalid data",
-      },
+      }
     );
   }
 }

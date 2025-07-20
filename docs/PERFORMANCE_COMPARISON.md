@@ -1,6 +1,7 @@
 # 🏁 Go vs TypeScript Performance Comparison
 
-This document contains comprehensive performance benchmarks comparing the Go reference implementation with our TypeScript port.
+This document contains comprehensive performance benchmarks comparing the Go reference
+implementation with our TypeScript port.
 
 ## 📊 Benchmark Methodology
 
@@ -150,7 +151,8 @@ cat performance-comparison.json
 
 ### Current Status
 
-The TypeScript implementation prioritizes **correctness and compatibility** over raw performance while still delivering **excellent performance** for the vast majority of use cases.
+The TypeScript implementation prioritizes **correctness and compatibility** over raw performance
+while still delivering **excellent performance** for the vast majority of use cases.
 
 ---
 

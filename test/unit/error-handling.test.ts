@@ -11,19 +11,19 @@ test("KSUID error message consistency", () => {
   assert.throws(
     () => KSUID.parse("invalid"),
     /Invalid KSUID string: expected 27 characters, got 7/,
-    "Parse should provide clear error message",
+    "Parse should provide clear error message"
   );
 
   assert.throws(
     () => KSUID.fromBytes(Buffer.alloc(19)),
     /Invalid KSUID: expected 20 bytes, got 19/,
-    "FromBytes should provide clear error message",
+    "FromBytes should provide clear error message"
   );
 
   assert.throws(
     () => KSUID.fromParts(123, Buffer.alloc(15)),
     /Invalid KSUID payload: expected 16 bytes, got 15/,
-    "FromParts should provide clear error message",
+    "FromParts should provide clear error message"
   );
 });
 
@@ -52,7 +52,7 @@ test("Base62 error handling edge cases", () => {
             error.message.includes("KSUID"))
         );
       },
-      `Should throw meaningful error for: "${invalid.replace(/\n/g, "\\n").replace(/\x00/g, "\\0")}"`,
+      `Should throw meaningful error for: "${invalid.replace(/\n/g, "\\n").replace(/\x00/g, "\\0")}"`
     );
   }
 });
@@ -69,7 +69,7 @@ test("Base62 buffer validation", () => {
     assert.throws(
       () => Base62.encode(buffer),
       /Invalid KSUID buffer: expected 20 bytes/,
-      `Should reject buffer of length ${buffer.length}`,
+      `Should reject buffer of length ${buffer.length}`
     );
   }
 });
@@ -81,7 +81,7 @@ test("KSUID timestamp boundary validation", () => {
   assert.throws(
     () => KSUID.fromParts(-1, payload),
     /Invalid timestamp: must be uint32 \(0 to 4294967295\), got -1/,
-    "Negative timestamps should be rejected",
+    "Negative timestamps should be rejected"
   );
 
   // Test max uint32 timestamp
@@ -138,7 +138,7 @@ test("Memory exhaustion protection", () => {
   // Verify we got some KSUIDs back (compression may reduce duplicates)
   assert.ok(
     decompressed.length >= 100,
-    `Should get reasonable number of KSUIDs back, got ${decompressed.length}`,
+    `Should get reasonable number of KSUIDs back, got ${decompressed.length}`
   );
 
   const finalMemory = process.memoryUsage().heapUsed;
@@ -147,7 +147,7 @@ test("Memory exhaustion protection", () => {
   // Should not consume more than 10MB for 1000 KSUIDs
   assert.ok(
     memoryIncrease < 10,
-    `Memory increase ${memoryIncrease.toFixed(2)}MB should be reasonable`,
+    `Memory increase ${memoryIncrease.toFixed(2)}MB should be reasonable`
   );
 });
 
@@ -163,14 +163,14 @@ test("Concurrent access safety", () => {
     promises.push(Promise.resolve().then(() => KSUID.random()));
   }
 
-  return Promise.all(promises).then((ksuids) => {
+  return Promise.all(promises).then(ksuids => {
     // All should be unique
-    const strings = ksuids.map((k) => k.toString());
+    const strings = ksuids.map(k => k.toString());
     const uniqueStrings = new Set(strings);
     assert.is(
       uniqueStrings.size,
       strings.length,
-      "All KSUIDs should be unique",
+      "All KSUIDs should be unique"
     );
 
     // All should be valid
@@ -197,13 +197,13 @@ test("Input sanitization", () => {
     const result = KSUID.parseOrNil(malicious);
     assert.ok(
       result.isNil(),
-      `parseOrNil should reject: "${malicious.replace(/[\x00-\x1F]/g, "?")}"`,
+      `parseOrNil should reject: "${malicious.replace(/[\x00-\x1F]/g, "?")}"`
     );
 
     // parse should throw
     assert.throws(
       () => KSUID.parse(malicious),
-      `parse should reject: "${malicious.replace(/[\x00-\x1F]/g, "?")}"`,
+      `parse should reject: "${malicious.replace(/[\x00-\x1F]/g, "?")}"`
     );
   }
 });
@@ -216,11 +216,11 @@ test("Stack trace preservation", () => {
     assert.ok(error.stack, "Error should have stack trace");
     assert.ok(
       error.stack.includes("KSUID.parse"),
-      "Stack trace should include calling function",
+      "Stack trace should include calling function"
     );
     assert.ok(
       error.message.includes("27 characters"),
-      "Error message should be descriptive",
+      "Error message should be descriptive"
     );
   }
 });

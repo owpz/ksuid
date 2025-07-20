@@ -1,6 +1,7 @@
 # API Versioning and Breaking Changes Policy
 
-This document defines what constitutes breaking changes requiring major version bumps for the @owpz/ksuid library, following [Semantic Versioning (SemVer)](https://semver.org/) principles.
+This document defines what constitutes breaking changes requiring major version bumps for the
+@owpz/ksuid library, following [Semantic Versioning (SemVer)](https://semver.org/) principles.
 
 ## Version Format
 
@@ -12,7 +13,8 @@ The library follows SemVer: `MAJOR.MINOR.PATCH`
 
 ## API Contract Tests
 
-The API contract is protected by comprehensive tests in `test/api-contract/` that will fail if breaking changes are introduced:
+The API contract is protected by comprehensive tests in `test/api-contract/` that will fail if
+breaking changes are introduced:
 
 - **`api-contract.test.ts`**: Core API surface (classes, methods, properties)
 - **`cli-contract.test.ts`**: Command-line interface stability
@@ -286,7 +288,8 @@ npm test test/api-contract/type-contract.test.ts
 
 ### Automated Checking
 
-API contract tests run in CI/CD and will fail the build if breaking changes are detected without a major version bump.
+API contract tests run in CI/CD and will fail the build if breaking changes are detected without a
+major version bump.
 
 ### Manual Review Checklist
 
@@ -335,11 +338,13 @@ Security vulnerabilities may require breaking changes in patch releases. These w
 
 ### Dependency Updates
 
-Major dependency updates that change behavior are treated as breaking changes even if the API surface remains the same.
+Major dependency updates that change behavior are treated as breaking changes even if the API
+surface remains the same.
 
 ### Documentation Clarifications
 
-If documentation clarification reveals that current behavior doesn't match intended behavior, fixing the behavior may be a breaking change requiring a major version bump.
+If documentation clarification reveals that current behavior doesn't match intended behavior, fixing
+the behavior may be a breaking change requiring a major version bump.
 
 ## Release Communication
 
@@ -375,4 +380,5 @@ Major releases include migration guides with:
 - Automated migration tools
 - Timeline for completing migration
 
-This policy ensures that users can depend on API stability while allowing the library to evolve responsibly.
+This policy ensures that users can depend on API stability while allowing the library to evolve
+responsibly.
