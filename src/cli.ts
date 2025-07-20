@@ -128,8 +128,9 @@ function printTemplate(ksuid: KSUID, template: string): void {
 
   let result = template;
   for (const [key, value] of Object.entries(data)) {
+    // Support both Go template syntax ({{ .Field }}) and simple syntax ({{ Field }})
     result = result.replace(
-      new RegExp(`{{\\s*${key}\\s*}}`, "g"),
+      new RegExp(`{{\\s*\\.?${key}\\s*}}`, "g"),
       value.toString()
     );
   }
