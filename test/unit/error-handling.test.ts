@@ -214,12 +214,13 @@ test("Stack trace preservation", () => {
     assert.unreachable("Should have thrown");
   } catch (error: any) {
     assert.ok(error.stack, "Error should have stack trace");
-    
+
     // Node.js version compatibility: Different versions format static method names differently
     // v24+: "KSUID.parse", v20-22: "parse" or "Function.parse"
-    const hasParseInStack = error.stack.includes("KSUID.parse") || 
-                           error.stack.includes(".parse") || 
-                           error.stack.includes("parse");
+    const hasParseInStack =
+      error.stack.includes("KSUID.parse") ||
+      error.stack.includes(".parse") ||
+      error.stack.includes("parse");
     assert.ok(
       hasParseInStack,
       "Stack trace should include calling function (KSUID.parse, .parse, or parse)"

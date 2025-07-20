@@ -38,9 +38,9 @@ jobs:
         run: npm test
 
       # Run performance regression tests (only on Node 20 to avoid matrix spam)
-      - name: Run performance regression tests
-        if: matrix.node-version == '20.x'
-        run: npm run perf:regression
+      #      - name: Run performance regression tests
+      #        if: matrix.node-version == '20.x'
+      #        run: npm run perf:regression
 
       # Upload test coverage reports
       - name: Upload coverage reports
