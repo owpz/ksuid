@@ -7,13 +7,21 @@
 #
 # Prerequisites:
 # - Go KSUID implementation built as './ksuid-go' 
-# - TypeScript implementation with 'npx ksuid' available
+# - TypeScript implementation available via KSUID_TS_CLI env var or 'npx ksuid'
 # - Both implementations in working directories
 
 set -e
 
+# Determine TypeScript CLI command
+if [ -n "$KSUID_TS_CLI" ]; then
+    TS_CMD="$KSUID_TS_CLI"
+else
+    TS_CMD="npx ksuid"
+fi
+
 echo "🔄 KSUID Cross-Validation Test Suite"
 echo "===================================="
+echo "TypeScript CLI: $TS_CMD"
 echo
 
 # Colors for output
@@ -43,12 +51,12 @@ compare_outputs() {
 echo -e "${BLUE}Test 1: Basic Generation and Parsing${NC}"
 
 # Generate KSUID in TypeScript, parse in Go
-TS_KSUID=$(npx ksuid -n 1)
+TS_KSUID=$($TS_CMD -n 1)
 echo "Generated in TypeScript: $TS_KSUID"
 
 # Parse in both implementations
 GO_INSPECT=$(echo "$TS_KSUID" | xargs -I {} sh -c './ksuid-go -f inspect {}' 2>/dev/null || echo "ERROR")
-TS_INSPECT=$(echo "$TS_KSUID" | xargs -I {} sh -c 'npx ksuid -f inspect {}' 2>/dev/null || echo "ERROR")
+TS_INSPECT=$(echo "$TS_KSUID" | xargs -I {} sh -c "$TS_CMD -f inspect {}" 2>/dev/null || echo "ERROR")
 
 compare_outputs "Inspect format" "$GO_INSPECT" "$TS_INSPECT"
 echo
@@ -61,21 +69,21 @@ TEST_KSUID="0o5sKzFDBc56T8mbUP8wH1KpSX7"
 echo "Testing known KSUID: $TEST_KSUID"
 
 GO_INSPECT2=$(./ksuid-go -f inspect "$TEST_KSUID" 2>/dev/null || echo "ERROR")
-TS_INSPECT2=$(npx ksuid -f inspect "$TEST_KSUID" 2>/dev/null || echo "ERROR")
+TS_INSPECT2=$($TS_CMD -f inspect "$TEST_KSUID" 2>/dev/null || echo "ERROR")
 
 compare_outputs "Known vector inspect" "$GO_INSPECT2" "$TS_INSPECT2"
 
 # Test different output formats
 GO_TIME=$(./ksuid-go -f time "$TEST_KSUID" 2>/dev/null || echo "ERROR")
-TS_TIME=$(npx ksuid -f time "$TEST_KSUID" 2>/dev/null || echo "ERROR")
+TS_TIME=$($TS_CMD -f time "$TEST_KSUID" 2>/dev/null || echo "ERROR")
 compare_outputs "Time format" "$GO_TIME" "$TS_TIME"
 
 GO_TIMESTAMP=$(./ksuid-go -f timestamp "$TEST_KSUID" 2>/dev/null || echo "ERROR")
-TS_TIMESTAMP=$(npx ksuid -f timestamp "$TEST_KSUID" 2>/dev/null || echo "ERROR")
+TS_TIMESTAMP=$($TS_CMD -f timestamp "$TEST_KSUID" 2>/dev/null || echo "ERROR")
 compare_outputs "Timestamp format" "$GO_TIMESTAMP" "$TS_TIMESTAMP"
 
 GO_PAYLOAD=$(./ksuid-go -f payload "$TEST_KSUID" 2>/dev/null || echo "ERROR")
-TS_PAYLOAD=$(npx ksuid -f payload "$TEST_KSUID" 2>/dev/null || echo "ERROR")
+TS_PAYLOAD=$($TS_CMD -f payload "$TEST_KSUID" 2>/dev/null || echo "ERROR")
 compare_outputs "Payload format" "$GO_PAYLOAD" "$TS_PAYLOAD"
 
 echo
@@ -88,7 +96,7 @@ echo "Testing invalid KSUID: $INVALID_KSUID"
 
 # Both should fail gracefully
 GO_ERROR=$(./ksuid-go -f inspect "$INVALID_KSUID" 2>&1 | head -n1 || echo "ERROR")
-TS_ERROR=$(npx ksuid -f inspect "$INVALID_KSUID" 2>&1 | head -n1 || echo "ERROR") 
+TS_ERROR=$($TS_CMD -f inspect "$INVALID_KSUID" 2>&1 | head -n1 || echo "ERROR") 
 
 # We expect both to error, so we just check they both failed
 if [[ "$GO_ERROR" == *"ERROR"* ]] || [[ "$GO_ERROR" == *"error"* ]] || [[ "$GO_ERROR" == *"invalid"* ]]; then
@@ -118,7 +126,7 @@ echo "Generating 3 KSUIDs from each implementation..."
 
 # Generate multiple KSUIDs
 GO_MULTIPLE=$(./ksuid-go -n 3 2>/dev/null | tr '\n' ' ' || echo "ERROR")
-TS_MULTIPLE=$(npx ksuid -n 3 2>/dev/null | tr '\n' ' ' || echo "ERROR")
+TS_MULTIPLE=$($TS_CMD -n 3 2>/dev/null | tr '\n' ' ' || echo "ERROR")
 
 # We can't compare the exact values since they're random, but we can check format
 GO_COUNT=$(echo "$GO_MULTIPLE" | wc -w)
@@ -136,7 +144,7 @@ fi
 echo "  Validating generated KSUIDs..."
 for ksuid in $GO_MULTIPLE; do
     if [ "$ksuid" != "ERROR" ]; then
-        PARSE_TEST=$(npx ksuid -f inspect "$ksuid" 2>/dev/null | head -n1 || echo "ERROR")
+        PARSE_TEST=$($TS_CMD -f inspect "$ksuid" 2>/dev/null | head -n1 || echo "ERROR")
         if [[ "$PARSE_TEST" == *"ERROR"* ]]; then
             echo -e "    ${RED}❌ Go-generated KSUID '$ksuid' failed TypeScript parsing${NC}"
         fi
@@ -166,4 +174,4 @@ echo "  TypeScript: npm test"
 echo
 echo "For manual testing, use:"
 echo "  Go: go run manual-test.go [ksuid]"
-echo "  TypeScript: npx ksuid -f inspect [ksuid]"
+echo "  TypeScript: $TS_CMD -f inspect [ksuid]"

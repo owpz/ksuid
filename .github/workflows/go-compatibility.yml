@@ -43,6 +43,10 @@ jobs:
           go mod tidy
           go build -o generate-vectors generate-interop-vectors.go
           go build -o manual-test manual-test.go
+          # Install Go KSUID CLI for cross-validation
+          go install github.com/segmentio/ksuid/cmd/ksuid@latest
+          # Create symlink for script
+          ln -sf $(go env GOPATH)/bin/ksuid ./ksuid-go
 
       - name: Run Go compatibility tests
         run: npm test -- test/integration/go-compatibility.test.ts test/integration/go-interop.test.ts
@@ -52,11 +56,11 @@ jobs:
           cd docs/validation
           ./generate-vectors > fresh-vectors.json
 
-      - name: Validate with Go CLI
+      - name: Validate with Go CLI  
         run: |
-          cd docs/validation
-          chmod +x cross-validate.sh
-          ./cross-validate.sh
+          chmod +x docs/validation/cross-validate.sh
+          # Run from project root with proper paths
+          cd docs/validation && KSUID_TS_CLI="node ../../dist/cli.js" ./cross-validate.sh
 
       - name: Upload validation results
         if: failure()
