@@ -1,6 +1,6 @@
 {
   "name": "@owpz/ksuid",
-  "version": "1.0.0",
+  "version": "25.7.20",
   "description": "TypeScript implementation of KSUID with full feature parity to the Go version",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -36,7 +36,7 @@
     "timestamp",
     "unique"
   ],
-  "author": "",
+  "author": "Apex Innovations, Inc.",
   "license": "MIT",
   "type": "commonjs",
   "files": [
@@ -62,5 +62,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "uvu": "^0.5.6"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/owpz/ksuid"
 }
