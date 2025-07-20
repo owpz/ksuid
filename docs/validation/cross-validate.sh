@@ -40,28 +40,23 @@ compare_outputs() {
         echo -e "  ${GREEN}✅ $test_name: PASS${NC}"
         return 0
     else
-        # For inspect format, check core data equality (normalize time format differences)
+        # For inspect format, normalize time format differences and compare
         if [[ "$test_name" == *"inspect"* ]]; then
-            # Extract key components and compare (ignore time format differences)
-            go_string=$(echo "$go_output" | grep "String:" | sed 's/.*String: //')
-            ts_string=$(echo "$ts_output" | grep "String:" | sed 's/.*String: //')
-            go_raw=$(echo "$go_output" | grep "Raw:" | sed 's/.*Raw: //')
-            ts_raw=$(echo "$ts_output" | grep "Raw:" | sed 's/.*Raw: //')
-            go_timestamp=$(echo "$go_output" | grep "Timestamp:" | sed 's/.*Timestamp: //')
-            ts_timestamp=$(echo "$ts_output" | grep "Timestamp:" | sed 's/.*Timestamp: //')
-            go_payload=$(echo "$go_output" | grep "Payload:" | sed 's/.*Payload: //')
-            ts_payload=$(echo "$ts_output" | grep "Payload:" | sed 's/.*Payload: //')
+            # Remove the time line entirely and compare the rest
+            go_normalized=$(echo "$go_output" | grep -v "Time:" | tr -d ' \t\n')
+            ts_normalized=$(echo "$ts_output" | grep -v "Time:" | tr -d ' \t\n')
             
-            if [ "$go_string" = "$ts_string" ] && [ "$go_raw" = "$ts_raw" ] && \
-               [ "$go_timestamp" = "$ts_timestamp" ] && [ "$go_payload" = "$ts_payload" ]; then
-                echo -e "  ${GREEN}✅ $test_name: PASS (format differences ignored)${NC}"
+            if [ "$go_normalized" = "$ts_normalized" ]; then
+                echo -e "  ${GREEN}✅ $test_name: PASS (time format differences ignored)${NC}"
                 return 0
             fi
         fi
         
         echo -e "  ${RED}❌ $test_name: FAIL${NC}"
-        echo "    Go:         $go_output"
-        echo "    TypeScript: $ts_output"
+        echo "    Go output:"
+        echo "$go_output" | sed 's/^/      /'
+        echo "    TypeScript output:"
+        echo "$ts_output" | sed 's/^/      /'
         return 1
     fi
 }
