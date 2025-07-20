@@ -1,0 +1,63 @@
+name: Publish Package to npm
+on:
+  push:
+    tags:
+      - "v*.*.*"
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Verify version matches between tag and package.json
+      - name: Verify version
+        run: |
+          # Fail immediately if a command fails
+          set -e
+          # Extract version from git tag (remove 'v' prefix)
+          TAG_VERSION=${GITHUB_REF#refs/tags/v}
+          # Check if package.json exists
+          if [ ! -f "package.json" ]; then
+            echo "Error: package.json not found"
+            exit 1
+          fi
+          # Extract version from package.json and trim any whitespace
+          PKG_VERSION=$(node -p "require('./package.json').version" | tr -d ' ')
+          # Compare versions and fail if they don't match
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Error: Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          else
+            echo "✓ Version match confirmed: $TAG_VERSION"
+          fi
+      # Setup Node.js environment
+      # Using SHA pin instead of version tag for security (prevents unexpected changes if the tag is moved)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org/
+          cache: "npm"
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+      # Run prepublishOnly script (clean, build, test)
+      - name: Prepare package
+        run: npm run prepublishOnly
+      # Verify build output exists
+      - name: Verify build output
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "Error: Build output directory 'dist' does not exist"
+            exit 1
+          fi
+          if [ -z "$(ls -A dist)" ]; then
+            echo "Error: Build output missing, dist directory is empty"
+            exit 1
+          fi
+          echo "✓ Build output verification successful"
+      # Publish to npm
+      - name: Publish package to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,67 @@
+name: Go Compatibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'docs/validation/**'
+      - 'package*.json'
+
+jobs:
+  cross-validation:
+    name: Cross-Validation with Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          cache: true
+      
+      - name: Install Node.js dependencies
+        run: npm ci
+      
+      - name: Build TypeScript
+        run: npm run build
+      
+      - name: Build Go validation tools
+        run: |
+          cd docs/validation
+          go mod init validation
+          go mod tidy
+          go build -o generate-vectors generate-interop-vectors.go
+          go build -o manual-test manual-test.go
+      
+      - name: Run Go compatibility tests
+        run: npm test -- test/integration/go-compatibility.test.ts test/integration/go-interop.test.ts
+      
+      - name: Generate fresh test vectors
+        run: |
+          cd docs/validation
+          ./generate-vectors > fresh-vectors.json
+      
+      - name: Validate with Go CLI
+        run: |
+          cd docs/validation
+          chmod +x cross-validate.sh
+          ./cross-validate.sh
+      
+      - name: Upload validation results
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-compatibility-results
+          path: |
+            docs/validation/*.json
+            docs/validation/*.log

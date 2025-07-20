@@ -1,0 +1,23 @@
+{
+  "name": "ksuid-go-validation",
+  "version": "1.0.0",
+  "description": "Go validation tools for KSUID TypeScript compatibility",
+  "main": "manual-test.go",
+  "scripts": {
+    "validate": "./cross-validate.sh",
+    "manual": "go run manual-test.go",
+    "vectors": "go run generate-interop-vectors.go"
+  },
+  "keywords": [
+    "ksuid",
+    "validation",
+    "go",
+    "typescript",
+    "compatibility"
+  ],
+  "author": "KSUID TypeScript Port",
+  "license": "MIT",
+  "dependencies": {
+    "github.com/segmentio/ksuid": "latest"
+  }
+}

@@ -1,0 +1,138 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run type checking
+      run: npm run type-check
+      
+    - name: Run unit tests
+      run: npm test
+      
+    - name: Run build
+      run: npm run build
+
+  api-contract:
+    runs-on: ubuntu-latest
+    name: API Contract Tests
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build project
+      run: npm run build
+      
+    - name: Run API Contract Tests
+      run: npm run test:contract
+      
+    - name: Check for breaking changes
+      if: failure()
+      run: |
+        echo "🚨 API CONTRACT VIOLATION DETECTED"
+        echo ""
+        echo "The API contract tests have failed, which indicates potential breaking changes."
+        echo "This means the changes in this PR may require a MAJOR version bump."
+        echo ""
+        echo "Please review:"
+        echo "1. The test failures above"
+        echo "2. The API Versioning Policy: docs/api-versioning.md"
+        echo "3. Whether these changes are intentional breaking changes"
+        echo ""
+        echo "If these are intentional breaking changes:"
+        echo "- Plan for a major version release (e.g., 2.0.0)"
+        echo "- Update the API contract tests to reflect the new API"
+        echo "- Document the breaking changes in CHANGELOG.md"
+        echo "- Provide migration guidance for users"
+        echo ""
+        echo "If these should NOT be breaking changes:"
+        echo "- Review the changes and fix the API compatibility issues"
+        echo "- Ensure backward compatibility is maintained"
+        exit 1
+
+  # Separate job for comprehensive testing on main branch merges
+  full-test:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: [test, api-contract]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run comprehensive tests
+      run: |
+        npm run build
+        npm test
+        npm run test:contract
+        
+    - name: Run performance benchmarks
+      run: npm run benchmark || echo "Benchmarks completed with warnings"
+      
+    - name: Run integration tests
+      run: |
+        # Run any integration tests if they exist
+        if [ -f "test/integration/go-compatibility.test.ts" ]; then
+          npm run test -- test/integration/
+        fi
+
+  # Notify on contract violations for pull requests
+  contract-status:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    needs: [api-contract]
+    
+    steps:
+    - name: API Contract Status
+      if: always()
+      run: |
+        if [ "${{ needs.api-contract.result }}" = "success" ]; then
+          echo "✅ API Contract: STABLE"
+          echo "No breaking changes detected. Safe for MINOR or PATCH release."
+        else
+          echo "❌ API Contract: VIOLATIONS DETECTED"
+          echo "Breaking changes may require a MAJOR version bump."
+          echo "See the API Contract Tests job for details."
+        fi

@@ -1,0 +1,55 @@
+{
+  "name": "@owpz/ksuid",
+  "version": "1.0.0",
+  "description": "TypeScript implementation of KSUID with full feature parity to the Go version",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "ksuid": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "uvu -r ts-node/register test",
+    "test:unit": "uvu -r ts-node/register test/unit",
+    "test:integration": "uvu -r ts-node/register test/integration",
+    "test:contract": "node test/api-contract/run-all-contract-tests.js",
+    "check-contract": "node scripts/check-api-contract.js",
+    "benchmark": "ts-node test/performance/benchmark.ts",
+    "stress-test": "ts-node test/performance/stress-test.ts",
+    "perf": "npm run benchmark && npm run stress-test",
+    "perf:regression": "ts-node test/performance/regression.ts",
+    "perf:compare": "ts-node test/performance/compare.ts",
+    "prepublishOnly": "npm run build",
+    "cli": "ts-node src/cli.ts",
+    "lint": "echo 'Linting not configured yet'",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "ksuid",
+    "uuid",
+    "identifier",
+    "sortable",
+    "timestamp",
+    "unique"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "base-x": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "uvu": "^0.5.6"
+  }
+}

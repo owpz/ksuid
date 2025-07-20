@@ -1,0 +1,49 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test with Node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 21.x, 22.x, 24.x, 25.x]
+
+    steps:
+      # Checkout repository code
+      - uses: actions/checkout@v4
+
+      # Setup Node.js environment
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      # Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Build package (includes type checking)
+      - name: Build package
+        run: npm run build
+
+      # Run tests
+      - name: Run tests
+        run: npm test
+
+      # Run performance regression tests (only on Node 20 to avoid matrix spam)
+      - name: Run performance regression tests
+        if: matrix.node-version == '20.x'
+        run: npm run perf:regression
+
+      # Upload test coverage reports
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          fail_ci_if_error: false

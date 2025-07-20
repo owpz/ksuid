@@ -1,0 +1,13 @@
+# Go build artifacts
+go-ksuid/
+ksuid-go
+*.exe
+*.out
+
+# Go modules
+go.mod
+go.sum
+
+# Test outputs
+*.log
+test-results.txt
