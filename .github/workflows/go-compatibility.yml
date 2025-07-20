@@ -56,7 +56,7 @@ jobs:
           cd docs/validation
           ./generate-vectors > fresh-vectors.json
 
-      - name: Validate with Go CLI  
+      - name: Validate with Go CLI
         run: |
           chmod +x docs/validation/cross-validate.sh
           # Run from project root with proper paths
