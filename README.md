@@ -564,6 +564,15 @@ compatibility.
 - ✅ **Sorting**: Identical lexicographic ordering
 - ✅ **CLI Tools**: Same command-line interface and output formats
 
+**Note on Time Format Differences:** The CLI tools produce identical core data but format timestamps
+differently due to language-specific date formatting conventions:
+
+- **Go CLI**: `2017-10-09 21:00:47 +0000 UTC` (Go's default time.Format layout)
+- **TypeScript CLI**: `2017-10-09T21:00:47.000Z` (JavaScript's ISO 8601 standard)
+
+Both represent the exact same moment in time - only the string formatting differs between the two
+language ecosystems.
+
 ### 🔄 Cross-Validation Test Vectors
 
 The following test vectors demonstrate perfect compatibility:
