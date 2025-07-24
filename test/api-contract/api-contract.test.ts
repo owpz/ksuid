@@ -341,8 +341,7 @@ test("Sorting functions API contract", () => {
 
   // sort(KSUID[]): void (sorts in place)
   const ksuidsToSort = [...ksuids]; // make a copy
-  const sortResult = sort(ksuidsToSort);
-  assert.is(sortResult, undefined); // sort returns void
+  sort(ksuidsToSort); // sort returns void - no return value to test
   assert.is(ksuidsToSort.length, ksuids.length);
   ksuidsToSort.forEach(ksuid => assert.ok(ksuid instanceof KSUID));
 

@@ -212,13 +212,13 @@ async function runBenchmarks(): Promise<void> {
   let accessIndex = 0;
   await benchmark.run("Timestamp Access", 100000, () => {
     const ksuid = testKsuids[accessIndex++ % testKsuids.length];
-    ksuid.timestamp;
+    void ksuid.timestamp; // Explicitly void to indicate intentional unused access
   });
 
   let payloadIndex = 0;
   await benchmark.run("Payload Access", 100000, () => {
     const ksuid = testKsuids[payloadIndex++ % testKsuids.length];
-    ksuid.payload;
+    void ksuid.payload; // Explicitly void to indicate intentional unused access
   });
 
   // Print results

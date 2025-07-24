@@ -1,7 +1,6 @@
 import { test } from "uvu";
 import * as assert from "uvu/assert";
 import { spawn } from "child_process";
-import { promisify } from "util";
 
 /**
  * CLI API Contract Tests

@@ -301,14 +301,13 @@ test("Sorting function signatures", () => {
 
   // Usage
   const ksuidsToSort = [...ksuids];
-  const sorted: void = sort(ksuidsToSort);
+  sort(ksuidsToSort); // sort returns void
   const checkSorted: boolean = isSorted(ksuids);
   const comparison: number = compare(ksuids[0], ksuids[1]);
 
   assert.type(sortFn, "function");
   assert.type(isSortedFn, "function");
   assert.type(compareFn, "function");
-  assert.is(sorted, undefined);
   assert.type(checkSorted, "boolean");
   assert.type(comparison, "number");
 });

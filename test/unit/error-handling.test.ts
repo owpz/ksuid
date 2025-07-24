@@ -115,7 +115,6 @@ test("CompressedSet error handling", () => {
 
   // Test with invalid compressed data during iteration
   const invalidSet = CompressedSet.fromBuffer(Buffer.from([0xff, 0xff, 0xff]));
-  const invalidIter = invalidSet.iter();
   // This may not throw immediately - the error might occur during iteration
   // Let's just test that we can create the set without errors
   assert.ok(invalidSet instanceof CompressedSet);
@@ -155,7 +154,6 @@ test("Concurrent access safety", () => {
   // Test that operations are safe when called concurrently
   // Note: JavaScript is single-threaded, but test rapid successive calls
 
-  const results = [];
   const promises = [];
 
   // Generate KSUIDs rapidly
