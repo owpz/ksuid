@@ -106,9 +106,9 @@ export class CompressedSet {
     pos += 20;
 
     let timestamp = uniqueIds[0].timestamp;
-    let lastKSUID = uniqueIds[0];
     let lastValue = Uint128.uint128Payload(uniqueIds[0].toBuffer());
 
+    let lastKSUID = uniqueIds[0]; // Initialize when needed
     for (let i = 1; i < uniqueIds.length; i++) {
       const id = uniqueIds[i];
 
@@ -184,7 +184,6 @@ export class CompressedSet {
       }
 
       // Update state for next iteration
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       lastKSUID = id;
       lastValue = v;
     }

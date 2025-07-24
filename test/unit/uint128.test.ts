@@ -74,9 +74,6 @@ test("Uint128 addition operations", () => {
 
 test("Uint128 addition with carry", () => {
   // Test carry propagation across 64-bit boundary
-  const a = Uint128.makeUint128FromPayload(
-    Buffer.from("00000000000000000000000000000000", "hex")
-  );
   const b = Uint128.makeUint128FromPayload(
     Buffer.from("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", "hex")
   );

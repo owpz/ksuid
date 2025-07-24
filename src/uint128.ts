@@ -5,13 +5,13 @@ const U64_MAX = 0xffffffffffffffffn;
 
 export class Uint128 {
   // Store as [low, high] to match Go's uint128 [2]uint64 layout
-  constructor(
-    private readonly low: bigint,
-    private readonly high: bigint
-  ) {
-    // Ensure values are within uint64 bounds
-    this.low = low & U64_MAX;
-    this.high = high & U64_MAX;
+  private readonly low: bigint;
+  private readonly high: bigint;
+
+  constructor(low: bigint, high: bigint) {
+    // Ensure values are within uint64 bounds - explicit BigInt conversion to avoid implicit conversion warnings
+    this.low = BigInt(low) & U64_MAX;
+    this.high = BigInt(high) & U64_MAX;
   }
 
   static makeUint128(high: bigint, low: bigint): Uint128 {
@@ -80,10 +80,11 @@ export class Uint128 {
 
   add(other: Uint128): Uint128 {
     // Add with carry handling
-    const lowSum = this.low + other.low;
+    const lowSum = BigInt(this.low) + BigInt(other.low);
     const carry = lowSum > U64_MAX ? 1n : 0n;
-    const newLow = lowSum & U64_MAX;
-    const newHigh = (this.high + other.high + carry) & U64_MAX;
+    const newLow = BigInt(lowSum) & U64_MAX;
+    const newHigh =
+      BigInt(BigInt(this.high) + BigInt(other.high) + carry) & U64_MAX;
     return new Uint128(newLow, newHigh);
   }
 
@@ -97,14 +98,18 @@ export class Uint128 {
       borrow = 1n;
     }
 
-    const newHigh = (this.high - other.high - borrow) & U64_MAX;
+    const newHigh =
+      BigInt(BigInt(this.high) - BigInt(other.high) - borrow) & U64_MAX;
     return new Uint128(newLow, newHigh);
   }
 
   incr(): Uint128 {
-    const newLow = this.low + 1n;
+    const newLow = BigInt(this.low) + 1n;
     const carry = newLow > U64_MAX ? 1n : 0n;
-    return new Uint128(newLow & U64_MAX, (this.high + carry) & U64_MAX);
+    return new Uint128(
+      BigInt(newLow) & U64_MAX,
+      BigInt(BigInt(this.high) + carry) & U64_MAX
+    );
   }
 
   decr(): Uint128 {
@@ -116,7 +121,7 @@ export class Uint128 {
       borrow = 1n;
     }
 
-    const newHigh = (this.high - borrow) & U64_MAX;
+    const newHigh = BigInt(BigInt(this.high) - borrow) & U64_MAX;
     return new Uint128(newLow, newHigh);
   }
 
