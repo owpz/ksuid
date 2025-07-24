@@ -50,7 +50,6 @@ class PerformanceComparison {
     console.log("📊 Step 1: Running TypeScript benchmark...");
 
     // Run TypeScript benchmark and capture results
-    const tsBenchmarkPath = join(perfDir, "benchmark.ts");
     try {
       execSync(`npm run benchmark`, {
         cwd: rootDir,
@@ -82,7 +81,6 @@ class PerformanceComparison {
     console.log("\n📊 Step 2: Setting up Go benchmark...");
 
     // Initialize Go module and get dependencies
-    const goBenchmarkPath = join(perfDir, "go-benchmark.go");
     const goModPath = join(perfDir, "go.mod");
 
     if (!existsSync(goModPath)) {
