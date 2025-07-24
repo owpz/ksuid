@@ -107,6 +107,7 @@ export class CompressedSet {
 
     let timestamp = uniqueIds[0].timestamp;
     let lastValue = Uint128.uint128Payload(uniqueIds[0].toBuffer());
+
     for (let i = 1; i < uniqueIds.length; i++) {
       const id = uniqueIds[i];
 
