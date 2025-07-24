@@ -84,7 +84,6 @@ export class Uint128 {
     const carry = lowSum > U64_MAX ? 1n : 0n;
     const newLow = lowSum & U64_MAX;
     const newHigh = (BigInt(this.high) + BigInt(other.high) + carry) & U64_MAX;
-
     return new Uint128(newLow, newHigh);
   }
 
@@ -99,7 +98,7 @@ export class Uint128 {
     }
 
     const newHigh = (BigInt(this.high) - BigInt(other.high) - borrow) & U64_MAX;
-    return new Uint128(newLow, newHigh);
+    return new Uint128(BigInt(newLow ?? 0n) & U64_MAX, BigInt(newHigh ?? 0n));
   }
 
   incr(): Uint128 {
@@ -118,7 +117,7 @@ export class Uint128 {
     }
 
     const newHigh = (BigInt(this.high) - borrow) & U64_MAX;
-    return new Uint128(newLow, newHigh);
+    return new Uint128(BigInt(newLow ?? 0n) & U64_MAX, BigInt(newHigh ?? 0n));
   }
 
   compare(other: Uint128): number {
