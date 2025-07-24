@@ -134,7 +134,10 @@ export class Uint128 {
   }
 
   equals(other: Uint128): boolean {
-    return BigInt(this.low) === BigInt(other.low) && BigInt(this.high) === BigInt(other.high);
+    return (
+      BigInt(this.low) === BigInt(other.low) &&
+      BigInt(this.high) === BigInt(other.high)
+    );
   }
 
   isZero(): boolean {
