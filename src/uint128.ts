@@ -10,8 +10,8 @@ export class Uint128 {
 
   constructor(low: bigint, high: bigint) {
     // Ensure values are within uint64 bounds - explicit BigInt conversion to avoid implicit conversion warnings
-    this.low = BigInt(low) & U64_MAX;
-    this.high = BigInt(high) & U64_MAX;
+    this.low = BigInt(low ?? 0n) & U64_MAX;
+    this.high = BigInt(high ?? 0n) & U64_MAX;
   }
 
   static makeUint128(high: bigint, low: bigint): Uint128 {
@@ -90,7 +90,7 @@ export class Uint128 {
 
   sub(other: Uint128): Uint128 {
     // Subtract with borrow handling
-    let newLow = this.low - other.low;
+    let newLow = BigInt(this.low) - BigInt(other.low);
     let borrow = 0n;
 
     if (newLow < 0n) {
@@ -113,7 +113,7 @@ export class Uint128 {
   }
 
   decr(): Uint128 {
-    let newLow = this.low - 1n;
+    let newLow = BigInt(this.low) - 1n;
     let borrow = 0n;
 
     if (newLow < 0n) {
@@ -126,19 +126,19 @@ export class Uint128 {
   }
 
   compare(other: Uint128): number {
-    if (this.high < other.high) return -1;
-    if (this.high > other.high) return 1;
-    if (this.low < other.low) return -1;
-    if (this.low > other.low) return 1;
+    if (BigInt(this.high) < BigInt(other.high)) return -1;
+    if (BigInt(this.high) > BigInt(other.high)) return 1;
+    if (BigInt(this.low) < BigInt(other.low)) return -1;
+    if (BigInt(this.low) > BigInt(other.low)) return 1;
     return 0;
   }
 
   equals(other: Uint128): boolean {
-    return this.low === other.low && this.high === other.high;
+    return BigInt(this.low) === BigInt(other.low) && BigInt(this.high) === BigInt(other.high);
   }
 
   isZero(): boolean {
-    return this.low === 0n && this.high === 0n;
+    return BigInt(this.low) === 0n && BigInt(this.high) === 0n;
   }
 
   toString(): string {
