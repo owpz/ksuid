@@ -29,8 +29,37 @@ const tests = [
   },
 ];
 
+// Whitelist of allowed test files to prevent path traversal
+const ALLOWED_TEST_FILES = new Set([
+  "api-contract.test.ts",
+  "cli-contract.test.ts",
+  "type-contract.test.ts",
+]);
+
 async function runTest(test) {
   return new Promise((resolve, reject) => {
+    // Validate test file against whitelist
+    if (!ALLOWED_TEST_FILES.has(test.file)) {
+      reject(
+        new Error(
+          `Test file '${test.file}' is not allowed. Allowed files: ${Array.from(ALLOWED_TEST_FILES).join(", ")}`
+        )
+      );
+      return;
+    }
+
+    // Ensure the file doesn't contain path traversal sequences
+    if (
+      test.file.includes("..") ||
+      test.file.includes("/") ||
+      test.file.includes("\\")
+    ) {
+      reject(
+        new Error(`Test file '${test.file}' contains invalid path characters`)
+      );
+      return;
+    }
+
     const testPath = path.join(__dirname, test.file);
 
     console.log(`\n🔍 Running ${test.name}...`);

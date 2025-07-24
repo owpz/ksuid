@@ -9,7 +9,17 @@
 
 const { spawn } = require("child_process");
 
+// Whitelist of allowed commands to prevent command injection
+const ALLOWED_COMMANDS = new Set(["npm"]);
+
 function runCommand(command, args = []) {
+  // Validate command against whitelist
+  if (!ALLOWED_COMMANDS.has(command)) {
+    throw new Error(
+      `Command '${command}' is not allowed. Allowed commands: ${Array.from(ALLOWED_COMMANDS).join(", ")}`
+    );
+  }
+
   return new Promise((resolve, reject) => {
     const child = spawn(command, args, {
       stdio: "inherit",
