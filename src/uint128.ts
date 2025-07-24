@@ -99,7 +99,6 @@ export class Uint128 {
 
     const newHigh = (BigInt(this.high) - BigInt(other.high) - borrow) & U64_MAX;
     return new Uint128(BigInt(newLow ?? 0n) & U64_MAX, BigInt(newHigh ?? 0n));
-
   }
 
   incr(): Uint128 {
@@ -118,7 +117,7 @@ export class Uint128 {
     }
 
     const newHigh = (BigInt(this.high) - borrow) & U64_MAX;
-    return new Uint128((BigInt(newLow ?? 0n) & U64_MAX), BigInt(newHigh ?? 0n));
+    return new Uint128(BigInt(newLow ?? 0n) & U64_MAX, BigInt(newHigh ?? 0n));
   }
 
   compare(other: Uint128): number {
