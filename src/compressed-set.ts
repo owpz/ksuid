@@ -108,7 +108,6 @@ export class CompressedSet {
     let timestamp = uniqueIds[0].timestamp;
     let lastValue = Uint128.uint128Payload(uniqueIds[0].toBuffer());
 
-    let _lastKSUID = uniqueIds[0]; // Initialize when needed
     for (let i = 1; i < uniqueIds.length; i++) {
       const id = uniqueIds[i];
 
@@ -168,7 +167,6 @@ export class CompressedSet {
             if (i < uniqueIds.length) {
               const newId = uniqueIds[i];
               lastValue = Uint128.uint128Payload(newId.toBuffer());
-              _lastKSUID = newId;
             } else {
               break; // We've processed all remaining IDs
             }
@@ -184,7 +182,6 @@ export class CompressedSet {
       }
 
       // Update state for next iteration
-      _lastKSUID = id;
       lastValue = v;
     }
 

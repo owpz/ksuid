@@ -154,7 +154,6 @@ test("Concurrent access safety", () => {
   // Test that operations are safe when called concurrently
   // Note: JavaScript is single-threaded, but test rapid successive calls
 
-  const results = [];
   const promises = [];
 
   // Generate KSUIDs rapidly

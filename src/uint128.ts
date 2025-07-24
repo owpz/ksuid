@@ -82,9 +82,9 @@ export class Uint128 {
     // Add with carry handling
     const lowSum = BigInt(this.low) + BigInt(other.low);
     const carry = lowSum > U64_MAX ? 1n : 0n;
-    const newLow = BigInt(lowSum) & U64_MAX;
-    const newHigh =
-      BigInt(BigInt(this.high) + BigInt(other.high) + carry) & U64_MAX;
+    const newLow = lowSum & U64_MAX;
+    const newHigh = (BigInt(this.high) + BigInt(other.high) + carry) & U64_MAX;
+
     return new Uint128(newLow, newHigh);
   }
 
@@ -98,18 +98,14 @@ export class Uint128 {
       borrow = 1n;
     }
 
-    const newHigh =
-      BigInt(BigInt(this.high) - BigInt(other.high) - borrow) & U64_MAX;
+    const newHigh = (BigInt(this.high) - BigInt(other.high) - borrow) & U64_MAX;
     return new Uint128(newLow, newHigh);
   }
 
   incr(): Uint128 {
     const newLow = BigInt(this.low) + 1n;
     const carry = newLow > U64_MAX ? 1n : 0n;
-    return new Uint128(
-      BigInt(newLow) & U64_MAX,
-      BigInt(BigInt(this.high) + carry) & U64_MAX
-    );
+    return new Uint128(newLow & U64_MAX, (BigInt(this.high) + carry) & U64_MAX);
   }
 
   decr(): Uint128 {
@@ -121,7 +117,7 @@ export class Uint128 {
       borrow = 1n;
     }
 
-    const newHigh = BigInt(BigInt(this.high) - borrow) & U64_MAX;
+    const newHigh = (BigInt(this.high) - borrow) & U64_MAX;
     return new Uint128(newLow, newHigh);
   }
 
