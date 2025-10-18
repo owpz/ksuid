@@ -113,13 +113,13 @@ To make API contract tests required for PRs:
 
 ### Recommended Required Checks
 
-- ✅ **API Contract Verification** (from `api-contract.yml`)
-- ✅ **test (20.x)** (from `ci.yml`)
-- ✅ **api-contract** (from `ci.yml`)
+-  **API Contract Verification** (from `api-contract.yml`)
+-  **test (20.x)** (from `ci.yml`)
+-  **api-contract** (from `ci.yml`)
 
 ## Bypassing Contract Checks
 
-**⚠️ Use with extreme caution**
+**️ Use with extreme caution**
 
 If you need to merge breaking changes (for a planned major version):
 
@@ -213,16 +213,16 @@ If contract tests fail but you believe the changes are compatible:
 
 ### Success Metrics
 
-- ✅ All PRs have contract test results
-- ✅ Breaking changes are caught before merge
-- ✅ Major version releases are properly planned
-- ✅ Contract tests stay up to date with API
+-  All PRs have contract test results
+-  Breaking changes are caught before merge
+-  Major version releases are properly planned
+-  Contract tests stay up to date with API
 
 ### Warning Signs
 
-- ⚠️ Contract tests frequently disabled or overridden
-- ⚠️ Many PRs with contract violations merged
-- ⚠️ Contract tests not updated after breaking changes
-- ⚠️ Contributors bypassing local contract checks
+- ️ Contract tests frequently disabled or overridden
+- ️ Many PRs with contract violations merged
+- ️ Contract tests not updated after breaking changes
+- ️ Contributors bypassing local contract checks
 
 This integration helps maintain API stability while allowing the library to evolve responsibly.

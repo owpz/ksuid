@@ -6,15 +6,15 @@ Brief description of what this PR does and why it's needed.
 
 ## 🔧 Type of Change
 
-- [ ] 🐛 Bug fix (non-breaking change that fixes an issue)
-- [ ] ✨ New feature (non-breaking change that adds functionality)
-- [ ] 💥 Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] 📚 Documentation update
-- [ ] 🎨 Code style/formatting changes
-- [ ] ♻️ Refactoring (no functional changes)
-- [ ] ⚡ Performance improvement
-- [ ] 🧪 Test improvements
-- [ ] 🔧 Build/CI changes
+- [ ]  Bug fix (non-breaking change that fixes an issue)
+- [ ]  New feature (non-breaking change that adds functionality)
+- [ ]  Breaking change (fix or feature that would cause existing functionality to change)
+- [ ]  Documentation update
+- [ ]  Code style/formatting changes
+- [ ] ️ Refactoring (no functional changes)
+- [ ]  Performance improvement
+- [ ]  Test improvements
+- [ ]  Build/CI changes
 
 ## 🧪 Testing
 

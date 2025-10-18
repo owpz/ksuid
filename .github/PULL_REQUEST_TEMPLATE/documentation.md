@@ -14,12 +14,12 @@
 
 ## Type of Update
 
-- [ ] 🐛 Fix incorrect information
-- [ ] ✨ Add missing documentation
-- [ ] 🎨 Improve clarity/readability
-- [ ] 📝 Add examples
-- [ ] 🔧 Update for new features
-- [ ] 🏗️ Restructure organization
+- [ ]  Fix incorrect information
+- [ ]  Add missing documentation
+- [ ]  Improve clarity/readability
+- [ ]  Add examples
+- [ ]  Update for new features
+- [ ] ️ Restructure organization
 
 ## Changes Made
 

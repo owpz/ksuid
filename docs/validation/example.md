@@ -83,9 +83,9 @@ echo "TypeScript next(): $TS_NEXT"
 
 # They should be identical
 if [ "$GO_NEXT" = "$TS_NEXT" ]; then
-    echo "✅ Next operations match!"
+    echo " Next operations match!"
 else
-    echo "❌ Next operations differ!"
+    echo " Next operations differ!"
 fi
 ```
 
@@ -124,12 +124,12 @@ This will run multiple test scenarios and report any compatibility issues.
 
 When compatibility is perfect, you should see:
 
-- ✅ Identical inspect output format
-- ✅ Identical timestamp values
-- ✅ Identical payload hex strings
-- ✅ Identical next/prev operation results
-- ✅ Identical sorting behavior
-- ✅ Identical error handling for invalid inputs
+-  Identical inspect output format
+-  Identical timestamp values
+-  Identical payload hex strings
+-  Identical next/prev operation results
+-  Identical sorting behavior
+-  Identical error handling for invalid inputs
 
 ## Troubleshooting
 

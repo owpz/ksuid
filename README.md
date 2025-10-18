@@ -178,44 +178,44 @@ tooling and comprehensive performance validation.
 
 ## Features
 
-✅ **Complete KSUID Implementation**
+ **Complete KSUID Implementation**
 
 - Generate cryptographically random KSUIDs
 - Parse and validate KSUID strings
 - Component extraction (timestamp, payload)
 - Nil KSUID support
 
-✅ **Advanced Navigation**
+ **Advanced Navigation**
 
 - `.next()` and `.prev()` methods with overflow handling
 - Navigate through KSUID space sequentially
 
-✅ **Monotonic Sequence Generation**
+ **Monotonic Sequence Generation**
 
 - Generate up to 65,536 ordered KSUIDs from a single seed
 - Perfect for high-throughput scenarios requiring ordered IDs
 
-✅ **Sorting & Comparison**
+ **Sorting & Comparison**
 
 - Efficient sorting utilities for KSUID arrays
 - Lexicographic ordering preservation
 - Fast comparison operations
 
-✅ **Multiple Constructors**
+ **Multiple Constructors**
 
 - `fromParts()` - Build from timestamp + payload
 - `fromBytes()` - Build from raw 20-byte buffer
 - `parseOrNil()` - Safe parsing with nil fallback
 - Additional `*OrNil` variants for error-safe operations
 
-✅ **Command Line Interface**
+ **Command Line Interface**
 
 - Generate KSUIDs: `npx ksuid -n 5`
 - Inspect KSUIDs: `npx ksuid -f inspect <ksuid>`
 - Multiple output formats: string, inspect, time, timestamp, payload, raw, template
 - Template formatting for custom output
 
-✅ **TypeScript Support**
+ **TypeScript Support**
 
 - Full type definitions included
 - Strict type checking
@@ -568,12 +568,12 @@ compatibility.
 
 **Verified Compatible Features:**
 
-- ✅ **String Encoding**: Identical Base62 representation
-- ✅ **Binary Format**: Byte-for-byte compatible raw format
-- ✅ **Component Extraction**: Exact timestamp and payload matching
-- ✅ **Next/Prev Operations**: Same sequence navigation results
-- ✅ **Sorting**: Identical lexicographic ordering
-- ✅ **CLI Tools**: Same command-line interface and output formats
+-  **String Encoding**: Identical Base62 representation
+-  **Binary Format**: Byte-for-byte compatible raw format
+-  **Component Extraction**: Exact timestamp and payload matching
+-  **Next/Prev Operations**: Same sequence navigation results
+-  **Sorting**: Identical lexicographic ordering
+-  **CLI Tools**: Same command-line interface and output formats
 
 **Note on Time Format Differences:** The CLI tools produce identical core data but format timestamps
 differently due to language-specific date formatting conventions:
@@ -598,7 +598,7 @@ console.log(ksuid.toString()); // '0o5sKzFDBc56T8mbUP8wH1KpSX7'
 console.log(ksuid.toBuffer().toString("hex"));
 // '05a9a844669f7efd7b6fe812278486085878563d'
 
-// ✅ Exact same results in Go:
+//  Exact same results in Go:
 // ksuid.FromParts(time.Unix(1495004740, 0), payload)
 // String(): "0o5sKzFDBc56T8mbUP8wH1KpSX7"
 // Bytes(): [5 169 168 68 102 159 126 253 ...]
@@ -623,13 +623,13 @@ Our comprehensive test suite validates compatibility across multiple scenarios:
 
 | Test Category         | Test Cases        | Pass Rate |
 | --------------------- | ----------------- | --------- |
-| **String Encoding**   | 25 test vectors   | ✅ 100%   |
-| **Binary Format**     | 15 edge cases     | ✅ 100%   |
-| **Next/Prev Ops**     | 12 scenarios      | ✅ 100%   |
-| **Component Extract** | 20 cases          | ✅ 100%   |
-| **Edge Cases**        | 18 boundary tests | ✅ 100%   |
-| **CLI Compatibility** | 10 format tests   | ✅ 100%   |
-| **Round-trip Tests**  | 50 random KSUIDs  | ✅ 100%   |
+| **String Encoding**   | 25 test vectors   |  100%   |
+| **Binary Format**     | 15 edge cases     |  100%   |
+| **Next/Prev Ops**     | 12 scenarios      |  100%   |
+| **Component Extract** | 20 cases          |  100%   |
+| **Edge Cases**        | 18 boundary tests |  100%   |
+| **CLI Compatibility** | 10 format tests   |  100%   |
+| **Round-trip Tests**  | 50 random KSUIDs  |  100%   |
 
 **Overall Compatibility: 100% (89/89 tests passing)**
 
@@ -708,7 +708,7 @@ const base = KSUID.parse("0o5sKzFDBc56T8mbUP8wH1KpSX7");
 console.log(base.next().toString()); // '0o5sKzFDBc56T8mbUP8wH1KpSX8'
 console.log(base.prev().toString()); // '0o5sKzFDBc56T8mbUP8wH1KpSX6'
 
-// ✅ Go ksuid.Next()/Prev() produce identical strings
+//  Go ksuid.Next()/Prev() produce identical strings
 ```
 
 ### 🏭 Production Deployment Confidence

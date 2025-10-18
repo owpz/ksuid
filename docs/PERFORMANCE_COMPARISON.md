@@ -18,13 +18,13 @@ implementation with our TypeScript port.
 
 | Operation                | Go Ops/sec  | TypeScript Ops/sec | Go Advantage  | Performance Ratio |
 | ------------------------ | ----------- | ------------------ | ------------- | ----------------- |
-| **KSUID Generation**     | 2,316,224   | 670,260            | 3.46x faster  | 🟢 Go wins        |
-| **String Parsing**       | 4,758,543   | 816,923            | 5.82x faster  | 🟢 Go wins        |
-| **String Encoding**      | 5,184,021   | 747,759            | 6.93x faster  | 🟢 Go wins        |
-| **Buffer Operations**    | 492,307,692 | 23,223,636         | 21.20x faster | 🟢 Go wins        |
-| **Next/Prev Navigation** | ~40M        | ~2.3M              | 17x faster    | 🟢 Go wins        |
-| **Comparison**           | 200,618,305 | 12,075,531         | 16.61x faster | 🟢 Go wins        |
-| **Sorting (1K items)**   | 19,588      | 2,484              | 7.89x faster  | 🟢 Go wins        |
+| **KSUID Generation**     | 2,316,224   | 670,260            | 3.46x faster  |  Go wins        |
+| **String Parsing**       | 4,758,543   | 816,923            | 5.82x faster  |  Go wins        |
+| **String Encoding**      | 5,184,021   | 747,759            | 6.93x faster  |  Go wins        |
+| **Buffer Operations**    | 492,307,692 | 23,223,636         | 21.20x faster |  Go wins        |
+| **Next/Prev Navigation** | ~40M        | ~2.3M              | 17x faster    |  Go wins        |
+| **Comparison**           | 200,618,305 | 12,075,531         | 16.61x faster |  Go wins        |
+| **Sorting (1K items)**   | 19,588      | 2,484              | 7.89x faster  |  Go wins        |
 
 ### Performance Summary
 

@@ -1,5 +1,5 @@
 ---
-name: ✨ Feature Request
+name:  Feature Request
 about: Suggest a new feature or enhancement
 title: "[FEATURE] "
 labels: ["enhancement", "needs-discussion"]
@@ -64,7 +64,6 @@ const result = KSUID.newFeature();
 -
 - **Edge cases to consider:**
 
--
 -
 
 ## 📚 Documentation Impact

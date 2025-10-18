@@ -1,5 +1,5 @@
 ---
-name: 🔄 Go Compatibility Issue
+name:  Go Compatibility Issue
 about: Report incompatibility with Go KSUID implementation
 title: "[COMPATIBILITY] "
 labels: ["go-compatibility", "bug", "high-priority"]

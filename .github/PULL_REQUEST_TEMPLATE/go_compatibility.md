@@ -44,10 +44,10 @@ cd docs/validation
 
 | Feature         | Go Result | TypeScript Result | Status |
 | --------------- | --------- | ----------------- | ------ |
-| String encoding | `result1` | `result1`         | ✅     |
-| Binary format   | `bytes1`  | `bytes1`          | ✅     |
-| Next/Prev ops   | `result2` | `result2`         | ✅     |
-| CLI output      | `output1` | `output1`         | ✅     |
+| String encoding | `result1` | `result1`         |      |
+| Binary format   | `bytes1`  | `bytes1`          |      |
+| Next/Prev ops   | `result2` | `result2`         |      |
+| CLI output      | `output1` | `output1`         |      |
 
 ## Test Evidence
 

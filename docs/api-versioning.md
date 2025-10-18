@@ -27,54 +27,54 @@ breaking changes are introduced:
 #### Class and Method Removal/Renaming
 
 ```typescript
-// ❌ BREAKING: Removing or renaming public classes
+//  BREAKING: Removing or renaming public classes
 export class KSUID {} // → export class KSUID_NEW { }
 
-// ❌ BREAKING: Removing or renaming public methods
+//  BREAKING: Removing or renaming public methods
 class KSUID {
   toString(): string {} // → toStr(): string { }
 }
 
-// ❌ BREAKING: Removing static methods
+//  BREAKING: Removing static methods
 KSUID.random(); // → KSUID.generate()
 ```
 
 #### Method Signature Changes
 
 ```typescript
-// ❌ BREAKING: Changing parameter types
+//  BREAKING: Changing parameter types
 KSUID.parse(s: string) // → KSUID.parse(s: Buffer)
 
-// ❌ BREAKING: Adding required parameters
+//  BREAKING: Adding required parameters
 KSUID.fromParts(timestamp: number, payload: Buffer)
 // → KSUID.fromParts(timestamp: number, payload: Buffer, required: boolean)
 
-// ❌ BREAKING: Making optional parameters required
+//  BREAKING: Making optional parameters required
 new Sequence(options?: { seed: KSUID })
 // → new Sequence(options: { seed: KSUID })
 
-// ❌ BREAKING: Changing return types
+//  BREAKING: Changing return types
 toString(): string // → toString(): Buffer
 ```
 
 #### Property Changes
 
 ```typescript
-// ❌ BREAKING: Removing or renaming properties
+//  BREAKING: Removing or renaming properties
 ksuid.timestamp; // → ksuid.ts
 ksuid.payload; // → ksuid.data
 
-// ❌ BREAKING: Changing property types
+//  BREAKING: Changing property types
 timestamp: number; // → timestamp: bigint
 ```
 
 #### Constant Changes
 
 ```typescript
-// ❌ BREAKING: Removing or renaming constants
+//  BREAKING: Removing or renaming constants
 KSUID.nil; // → KSUID.NULL
 
-// ❌ BREAKING: Changing constant values
+//  BREAKING: Changing constant values
 KSUID.nil.toString(); // "000000000000000000000000000" → "nil"
 ```
 
@@ -83,24 +83,24 @@ KSUID.nil.toString(); // "000000000000000000000000000" → "nil"
 #### Error Type Changes
 
 ```typescript
-// ❌ BREAKING: Changing error types thrown
+//  BREAKING: Changing error types thrown
 KSUID.parse("invalid"); // throws Error → throws TypeError
 
-// ❌ BREAKING: Removing error codes
+//  BREAKING: Removing error codes
 KSUID_ERROR_CODES.INVALID_LENGTH; // → undefined
 
-// ❌ BREAKING: Changing error code values
+//  BREAKING: Changing error code values
 KSUID_ERROR_CODES.INVALID_LENGTH; // "INVALID_LENGTH" → "LENGTH_ERROR"
 ```
 
 #### Error Structure Changes
 
 ```typescript
-// ❌ BREAKING: Removing error properties
+//  BREAKING: Removing error properties
 error.code; // → undefined
 error.expected; // → undefined
 
-// ❌ BREAKING: Changing error message format significantly
+//  BREAKING: Changing error message format significantly
 // (if applications parse error messages)
 ("Invalid KSUID: expected 20 bytes, got 15");
 // → "Buffer size mismatch"
@@ -111,23 +111,23 @@ error.expected; // → undefined
 #### Method Behavior
 
 ```typescript
-// ❌ BREAKING: Changing fundamental behavior
+//  BREAKING: Changing fundamental behavior
 KSUID.parseOrNil("invalid"); // returns nil → throws error
 
-// ❌ BREAKING: Changing output format
+//  BREAKING: Changing output format
 ksuid.toString(); // Base62 → Base64
 
-// ❌ BREAKING: Changing side effects
+//  BREAKING: Changing side effects
 KSUID.random(); // no side effects → logs to console
 ```
 
 #### Value Constraints
 
 ```typescript
-// ❌ BREAKING: Tightening validation
+//  BREAKING: Tightening validation
 KSUID.fromParts(-1, payload); // worked → now throws
 
-// ❌ BREAKING: Changing value ranges
+//  BREAKING: Changing value ranges
 ksuid.timestamp; // uint32 → int32 (loses range)
 ```
 
@@ -159,20 +159,20 @@ ksuid invalid   # exits 1 → exits 2
 #### Type Definitions
 
 ```typescript
-// ❌ BREAKING: Narrowing types (more restrictive)
+//  BREAKING: Narrowing types (more restrictive)
 parse(s: string | Buffer) // → parse(s: string)
 
-// ❌ BREAKING: Changing generic constraints
+//  BREAKING: Changing generic constraints
 class Sequence<T extends KSUID> // → class Sequence<T extends Buffer>
 
-// ❌ BREAKING: Removing exported types
+//  BREAKING: Removing exported types
 export type KSUIDErrorCode // → removed from exports
 ```
 
 #### Type Inference Changes
 
 ```typescript
-// ❌ BREAKING: Breaking type inference
+//  BREAKING: Breaking type inference
 const ksuid = KSUID.random(); // inferred as KSUID → any
 ```
 
@@ -183,26 +183,26 @@ const ksuid = KSUID.random(); // inferred as KSUID → any
 #### Adding New Functionality
 
 ```typescript
-// ✅ SAFE: Adding new methods
+//  SAFE: Adding new methods
 class KSUID {
   // existing methods...
   validate(): boolean { } // NEW
 }
 
-// ✅ SAFE: Adding new static methods
+//  SAFE: Adding new static methods
 KSUID.fromTimestamp(ts: number): KSUID { } // NEW
 
-// ✅ SAFE: Adding optional parameters
+//  SAFE: Adding optional parameters
 KSUID.fromParts(timestamp: number, payload: Buffer, options?: ParseOptions)
 ```
 
 #### Expanding Types (Less Restrictive)
 
 ```typescript
-// ✅ SAFE: Widening parameter types
+//  SAFE: Widening parameter types
 parse(s: string) // → parse(s: string | Buffer)
 
-// ✅ SAFE: Making required parameters optional
+//  SAFE: Making required parameters optional
 new Sequence(options: { seed: KSUID })
 // → new Sequence(options?: { seed?: KSUID })
 ```
@@ -210,28 +210,28 @@ new Sequence(options: { seed: KSUID })
 #### Adding Error Information
 
 ```typescript
-// ✅ SAFE: Adding new error properties
+//  SAFE: Adding new error properties
 class KSUIDError {
   code: string;
   // existing properties...
   context?: string; // NEW optional property
 }
 
-// ✅ SAFE: Adding new error codes
+//  SAFE: Adding new error codes
 KSUID_ERROR_CODES.NEW_ERROR_TYPE = "NEW_ERROR_TYPE";
 ```
 
 #### Performance Improvements
 
 ```typescript
-// ✅ SAFE: Internal optimizations that don't change behavior
+//  SAFE: Internal optimizations that don't change behavior
 KSUID.random(); // faster implementation, same output
 ```
 
 #### Bug Fixes
 
 ```typescript
-// ✅ SAFE: Fixing incorrect behavior to match documentation
+//  SAFE: Fixing incorrect behavior to match documentation
 ksuid.compare(other); // was returning wrong values, now correct
 ```
 

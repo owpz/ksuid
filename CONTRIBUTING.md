@@ -173,14 +173,12 @@ export class KSUID {
   static random(): KSUID {
     // Implementation
   }
-}
 
 // Avoid
 export class KSUID {
   static random(): any {
     // No documentation
   }
-}
 ```
 
 #### Testing Standards
@@ -338,7 +336,7 @@ When reporting bugs:
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [Testing with uvu](https://github.com/lukeed/uvu)
 
-## 🙋‍♀️ Getting Help
+## 🙋‍️ Getting Help
 
 - **Issues**: For bugs and feature requests
 - **Discussions**: For questions and general discussion
@@ -353,4 +351,4 @@ Contributors will be:
 - Mentioned in release notes
 - Given credit in commit messages
 
-Thank you for contributing to make KSUID TypeScript better! 🚀
+Thank you for contributing to make KSUID TypeScript better! 

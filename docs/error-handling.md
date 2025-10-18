@@ -23,7 +23,6 @@ try {
     console.log("Actual:", error.actual); // '7 characters'
     console.log("Input:", error.input); // 'invalid'
   }
-}
 ```
 
 ### Error Properties
@@ -75,7 +74,6 @@ try {
     console.log(error.code); // 'INVALID_LENGTH'
     console.log(error.message); // 'Invalid KSUID string: expected 27 characters, got 3'
   }
-}
 
 // Invalid characters
 try {
@@ -85,7 +83,6 @@ try {
     console.log(error.code); // 'INVALID_CHARACTER'
     console.log(error.message); // 'Invalid KSUID string: invalid character '!' at position 0'
   }
-}
 ```
 
 ### Invalid Buffer Operations
@@ -99,7 +96,6 @@ try {
     console.log(error.code); // 'INVALID_BUFFER_SIZE'
     console.log(error.message); // 'Invalid KSUID: expected 20 bytes, got 19'
   }
-}
 
 // Invalid payload size
 try {
@@ -109,7 +105,6 @@ try {
     console.log(error.code); // 'INVALID_BUFFER_SIZE'
     console.log(error.message); // 'Invalid KSUID payload: expected 16 bytes, got 15'
   }
-}
 ```
 
 ### Invalid Timestamp Values
@@ -123,7 +118,6 @@ try {
     console.log(error.code); // 'INVALID_TIMESTAMP'
     console.log(error.message); // 'Invalid timestamp: must be uint32 (0 to 4294967295), got -1'
   }
-}
 
 // Timestamp too large
 try {
@@ -133,7 +127,6 @@ try {
     console.log(error.code); // 'INVALID_TIMESTAMP'
     console.log(error.message); // 'Invalid timestamp: must be uint32 (0 to 4294967295), got 1099511627776'
   }
-}
 ```
 
 ### Null/Undefined Inputs
@@ -147,7 +140,6 @@ try {
     console.log(error.code); // 'INVALID_INPUT'
     console.log(error.message); // 'Invalid string: cannot be null or undefined'
   }
-}
 
 // Undefined buffer
 try {
@@ -157,7 +149,6 @@ try {
     console.log(error.code); // 'INVALID_INPUT'
     console.log(error.message); // 'Invalid buffer: cannot be null or undefined'
   }
-}
 ```
 
 ## Error Handling Patterns
@@ -186,7 +177,6 @@ function parseKSUID(input: string): KSUID | null {
     }
     return null;
   }
-}
 ```
 
 ### Specific Error Code Handling
@@ -210,7 +200,6 @@ function handleKSUIDError(error: unknown) {
     default:
       return { success: false, reason: "unknown_error" };
   }
-}
 ```
 
 ### Graceful Degradation with OrNil Methods
@@ -239,7 +228,6 @@ class ApplicationError extends Error {
     super(message);
     this.name = "ApplicationError";
   }
-}
 
 function processUserInput(userInput: string): KSUID {
   try {
@@ -250,7 +238,6 @@ function processUserInput(userInput: string): KSUID {
     }
     throw error;
   }
-}
 ```
 
 ## Best Practices
@@ -258,24 +245,24 @@ function processUserInput(userInput: string): KSUID {
 ### 1. Always Use Type Guards
 
 ```typescript
-// ✅ Good: Use isKSUIDError type guard
+//  Good: Use isKSUIDError type guard
 if (isKSUIDError(error)) {
   console.log(error.code, error.message);
 }
 
-// ❌ Bad: Assumes error type
+//  Bad: Assumes error type
 console.log((error as KSUIDError).code);
 ```
 
 ### 2. Handle Specific Error Codes
 
 ```typescript
-// ✅ Good: Handle specific error types
+//  Good: Handle specific error types
 if (error.code === KSUID_ERROR_CODES.INVALID_LENGTH) {
   return "Please provide a 27-character KSUID string";
 }
 
-// ❌ Bad: Parse error message strings
+//  Bad: Parse error message strings
 if (error.message.includes("27 characters")) {
   return "Wrong length";
 }
@@ -284,7 +271,7 @@ if (error.message.includes("27 characters")) {
 ### 3. Provide User-Friendly Messages
 
 ```typescript
-// ✅ Good: Convert technical errors to user-friendly messages
+//  Good: Convert technical errors to user-friendly messages
 function getUserFriendlyError(error: KSUIDError): string {
   switch (error.code) {
     case KSUID_ERROR_CODES.INVALID_LENGTH:
@@ -296,19 +283,18 @@ function getUserFriendlyError(error: KSUIDError): string {
     default:
       return "The ID format is invalid. Please try again.";
   }
-}
 ```
 
 ### 4. Use OrNil for Optional Operations
 
 ```typescript
-// ✅ Good: Use OrNil when failure is acceptable
+//  Good: Use OrNil when failure is acceptable
 const optionalKSUID = KSUID.parseOrNil(userInput);
 if (!optionalKSUID.isNil()) {
   processKSUID(optionalKSUID);
 }
 
-// ❌ Bad: Catch exceptions for optional operations
+//  Bad: Catch exceptions for optional operations
 try {
   const ksuid = KSUID.parse(userInput);
   processKSUID(ksuid);
