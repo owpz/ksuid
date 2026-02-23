@@ -167,6 +167,7 @@ export class CompressedSet {
             if (i < uniqueIds.length) {
               const newId = uniqueIds[i];
               lastValue = Uint128.uint128Payload(newId.toBuffer());
+              continue;
             } else {
               break; // We've processed all remaining IDs
             }
