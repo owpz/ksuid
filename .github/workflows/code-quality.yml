@@ -124,7 +124,7 @@ jobs:
 
   dependency-audit:
     runs-on: ubuntu-latest
-    name: Security Audit
+    name: Dependency Audit
 
     steps:
       - name: Checkout code
