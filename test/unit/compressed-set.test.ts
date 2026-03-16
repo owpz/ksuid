@@ -235,4 +235,19 @@ test("CompressedSet toString format", () => {
   assert.ok(str.includes('"'));
 });
 
+test("CompressedSet rejects oversized range length payloads", () => {
+  const base = KSUID.fromParts(95004740, Buffer.alloc(16));
+  const rawEntry = Buffer.concat([Buffer.from([0]), base.toBuffer()]);
+  const hugeRange = Buffer.from([0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]);
+  const payloadRangeEntry = Buffer.concat([Buffer.from([0xc8]), hugeRange]);
+  const malformed = Buffer.concat([rawEntry, payloadRangeEntry]);
+
+  const set = CompressedSet.fromBuffer(malformed);
+
+  assert.throws(
+    () => set.toArray(),
+    /Malformed data detected: range length out of bounds/
+  );
+});
+
 test.run();

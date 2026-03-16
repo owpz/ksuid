@@ -395,6 +395,10 @@ export class CompressedSetIter {
       }
 
       case PAYLOAD_RANGE: {
+        if (cnt === 0 || cnt > 8) {
+          throw KSUIDError.malformedData("invalid range length encoding");
+        }
+
         // Read range length
         const lengthBuffer = this.content.subarray(
           this.offset,
@@ -403,9 +407,13 @@ export class CompressedSetIter {
         const rangeLength = this.readVarint64(lengthBuffer);
         this.offset += cnt;
 
+        if (rangeLength < 1n || rangeLength > BigInt(Number.MAX_SAFE_INTEGER)) {
+          throw KSUIDError.malformedData("range length out of bounds");
+        }
+
         const value = this.lastValue.incr();
         this.ksuid = KSUID.fromBytes(value.ksuid(this.timestamp));
-        this.seqlength = rangeLength - 1;
+        this.seqlength = Number(rangeLength - 1n);
         this.lastValue = value;
         break;
       }
@@ -425,10 +433,10 @@ export class CompressedSetIter {
     return temp.readUInt32BE(0);
   }
 
-  private readVarint64(buffer: Buffer): number {
+  private readVarint64(buffer: Buffer): bigint {
     const temp = Buffer.alloc(8);
     buffer.copy(temp, 8 - buffer.length);
-    return Number(temp.readBigUInt64BE(0));
+    return temp.readBigUInt64BE(0);
   }
 
   private readVarint128(buffer: Buffer): Uint128 {
