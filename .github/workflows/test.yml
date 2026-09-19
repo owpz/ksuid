@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [20.x, 22.x, 24.x]
+        node-version: [22.x, 24.x, 26.x]
 
     steps:
       # Checkout repository code
@@ -37,9 +37,9 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # Run performance regression tests (only on Node 20 to avoid matrix spam)
+      # Run performance regression tests (only on Node 24 to avoid matrix spam)
       #      - name: Run performance regression tests
-      #        if: matrix.node-version == '20.x'
+      #        if: matrix.node-version == '24.x'
       #        run: npm run perf:regression
 
       # Upload test coverage reports
@@ -47,3 +47,56 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           fail_ci_if_error: false
+
+  # Verify the published artifact actually runs on the floor declared in
+  # package.json "engines". Dev dependencies (ESLint 10, TypeScript tooling)
+  # require newer Node and cannot be installed here, so we build on a current
+  # release and then exercise only dist/ on the old runtimes.
+  engines-floor:
+    name: Engines floor smoke test (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16, 18]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Build with a supported Node release
+      - name: Setup Node.js (build)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build package
+        run: npm run build
+
+      # Swap to the floor runtime; dist/ and the runtime dep are already in place
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Smoke test dist/ on Node ${{ matrix.node-version }}
+        run: |
+          node --version
+          node -e "
+            const { KSUID } = require('./dist/index.js');
+            const k = KSUID.random();
+            const parsed = KSUID.parse(k.toString());
+            if (parsed.toString() !== k.toString()) {
+              throw new Error('round-trip mismatch on ' + process.version);
+            }
+            if (parsed.compare(k) !== 0) {
+              throw new Error('compare mismatch on ' + process.version);
+            }
+            console.log('ok', process.version, k.toString());
+          "
+
+      - name: Smoke test CLI on Node ${{ matrix.node-version }}
+        run: node dist/cli.js
