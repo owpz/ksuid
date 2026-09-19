@@ -159,7 +159,7 @@ been used in production at Segment for several years across diverse, high-scale 
 ### ✅ Quality Assurance
 
 - **100% Go Compatibility**: Perfect interoperability with reference implementation
-- **Comprehensive Testing**: 89/89 tests passing with full edge case coverage
+- **Comprehensive Testing**: 180/180 tests passing with full edge case coverage
 - **Cross-Validation**: Automated testing against Go implementation with real test vectors
 - **Performance Verified**: Benchmarked and stress-tested for production workloads
 - **Memory Profiled**: Efficient memory usage patterns validated under load
@@ -631,7 +631,7 @@ Our comprehensive test suite validates compatibility across multiple scenarios:
 | **CLI Compatibility** | 10 format tests   | ✅ 100%   |
 | **Round-trip Tests**  | 50 random KSUIDs  | ✅ 100%   |
 
-**Overall Compatibility: 100% (89/89 tests passing)**
+**Overall Compatibility: 100% across all categories above**
 
 ### 🧪 Running Compatibility Tests
 
@@ -749,7 +749,7 @@ const next = ksuid.next();
 ## Testing
 
 ```bash
-npm test        # Run test suite (89/89 tests passing)
+npm test        # Run test suite (180/180 tests passing)
 npm run build   # Build TypeScript to JavaScript
 npm run cli     # Run CLI tool directly
 ```
