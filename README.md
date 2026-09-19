@@ -159,7 +159,7 @@ been used in production at Segment for several years across diverse, high-scale 
 ### ✅ Quality Assurance
 
 - **100% Go Compatibility**: Perfect interoperability with reference implementation
-- **Comprehensive Testing**: 89/89 tests passing with full edge case coverage
+- **Comprehensive Testing**: 180/180 tests passing with full edge case coverage
 - **Cross-Validation**: Automated testing against Go implementation with real test vectors
 - **Performance Verified**: Benchmarked and stress-tested for production workloads
 - **Memory Profiled**: Efficient memory usage patterns validated under load
@@ -631,7 +631,7 @@ Our comprehensive test suite validates compatibility across multiple scenarios:
 | **CLI Compatibility** | 10 format tests   | ✅ 100%   |
 | **Round-trip Tests**  | 50 random KSUIDs  | ✅ 100%   |
 
-**Overall Compatibility: 100% (89/89 tests passing)**
+**Overall Compatibility: 100% across all categories above**
 
 ### 🧪 Running Compatibility Tests
 
@@ -749,10 +749,27 @@ const next = ksuid.next();
 ## Testing
 
 ```bash
-npm test        # Run test suite (89/89 tests passing)
+npm test        # Run test suite (180/180 tests passing)
 npm run build   # Build TypeScript to JavaScript
 npm run cli     # Run CLI tool directly
 ```
+
+## Versioning
+
+This project started out using **CalVer** (`YY.M.D`), which is why early releases carry dates as
+version numbers — `25.7.20` was published on 2025-07-20.
+
+As of **25.7.21**, the project follows **[SemVer](https://semver.org/)**. The public API and
+behavior have stayed consistent since the initial release, so rather than resetting the version
+number and breaking `npm` upgrade paths, we keep the existing number as the SemVer baseline and
+increment from there:
+
+- **MAJOR** — breaking changes to the public API
+- **MINOR** — backward-compatible functionality
+- **PATCH** — bug fixes, dependency and security updates
+
+`25.7.21` is a **patch** release: it contains no API or functionality changes, only security updates
+to transitive development dependencies.
 
 ## Contributing
 
