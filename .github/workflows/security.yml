@@ -8,6 +8,9 @@ on:
   schedule:
     # Run security audit weekly on Mondays at 8 AM UTC
     - cron: "0 8 * * 1"
+  # Allow the audit to be re-run on demand, e.g. to confirm a fix without
+  # waiting for the weekly schedule or pushing a commit
+  workflow_dispatch:
 
 jobs:
   audit:
