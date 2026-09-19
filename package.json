@@ -1,6 +1,6 @@
 {
   "name": "@owpz/ksuid",
-  "version": "25.7.20",
+  "version": "25.7.21",
   "description": "TypeScript implementation of KSUID with full feature parity to the Go version",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

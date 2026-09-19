@@ -754,6 +754,23 @@ npm run build   # Build TypeScript to JavaScript
 npm run cli     # Run CLI tool directly
 ```
 
+## Versioning
+
+This project started out using **CalVer** (`YY.M.D`), which is why early releases carry dates as
+version numbers — `25.7.20` was published on 2025-07-20.
+
+As of **25.7.21**, the project follows **[SemVer](https://semver.org/)**. The public API and
+behavior have stayed consistent since the initial release, so rather than resetting the version
+number and breaking `npm` upgrade paths, we keep the existing number as the SemVer baseline and
+increment from there:
+
+- **MAJOR** — breaking changes to the public API
+- **MINOR** — backward-compatible functionality
+- **PATCH** — bug fixes, dependency and security updates
+
+`25.7.21` is a **patch** release: it contains no API or functionality changes, only security updates
+to transitive development dependencies.
+
 ## Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
